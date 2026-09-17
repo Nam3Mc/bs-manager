@@ -1,0 +1,20 @@
+BS-Manager
+
+Team Member
+
+Easy Trakker for Professional Business Activities
+
+Description: 
+BS-Manager is an app that will help business owners to keep accurate track of the company stock, production, clients and the web page for clients to request services or product, It will handler the admin panel with security access just for authorized personal, and the page for clients to check products and services provided, focus in small business with productions in base of ingredients, like fast food and bakery.
+
+ 
+
+Problem Solved:
+Business owner usually take orders and register sells and productions in paper, that make it harder to track accurately and with efficiency, losing time in calculating production costs and stock record, production earnings and clients records, BS-Manager will help to manage the business smoothly and will provide the customer an easy way to order what they want when the y need it.
+
+Core Features
+Create, Get, Delete and Update Items
+Create, Get, Delete and Update Products in base of the Items in stock
+Get costs of production in base of the Items used in the preparation of the Product
+Create, Get, Delete and Update Orders from clients 
+Create, Get, Delete and Update Accounts for clients To access to promotions and codes
