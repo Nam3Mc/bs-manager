@@ -84,14 +84,11 @@ charts and one-off tints only. In components, use the semantic names.
   Never animate `width` or `height` — use `transform` / `opacity`.
 
 ## Data
-- PostgreSQL + Prisma. Schema in `prisma/schema.prisma`.
-- Entities: `User`, `Business`, `Store`, `Item`, `Product`, `Order`, `OrderLine`, `CartItem`.
-- A `Product` is a sellable SKU derived from `Item`s
-  (e.g. 500 g corn = 1 Item × quantity + packaging cost).
-- `Product` belongs to `Store` → `Store` belongs to `Business` → `User` has role
-  `ADMIN` | `CLIENT`.
-- Never call Prisma from a Client Component. Use Server Components, Server Actions,
-  or Route Handlers.
+- PostgreSQL on Neon. Driver: `@neondatabase/serverless` via `lib/db.ts`.
+- **There is no ORM.** Every query uses the `sql` tagged template from `lib/db.ts`:
+  ```ts
+  import { sql } from "@/lib/db";
+  const rows = await sql`SELECT * FROM products WHERE store_id = ${storeId}`;
 
 ## Store theming
 - Each `Store` carries `themePreset`, `backgroundStyle`, `heroImageUrl`,
