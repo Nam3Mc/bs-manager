@@ -12,9 +12,19 @@ export type SessionPayload = {
   role: UserRole;
 };
 
-const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
-if (!process.env.AUTH_SECRET) {
-  throw new Error("AUTH_SECRET is not set. Add it to .env.local and Vercel env vars.");
+/**
+ * Lazily resolve the secret. Never throw at module load — Next.js imports
+ * every route module during the build to collect config, and a top-level
+ * throw turns a missing env var into a build failure instead of a 500.
+ */
+function getSecret(): Uint8Array {
+  const secret = process.env.AUTH_SECRET;
+  if (!secret) {
+    throw new Error(
+      "AUTH_SECRET is not set. Add it to .env.local and Vercel env vars."
+    );
+  }
+  return new TextEncoder().encode(secret);
 }
 
 export async function signSession(payload: SessionPayload): Promise<string> {
@@ -22,7 +32,7 @@ export async function signSession(payload: SessionPayload): Promise<string> {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(`${SESSION_MAX_AGE}s`)
-    .sign(secret);
+    .sign(getSecret());
 }
 
 export async function verifySession(
@@ -30,7 +40,7 @@ export async function verifySession(
 ): Promise<SessionPayload | null> {
   if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secret);
+    const { payload } = await jwtVerify(token, getSecret());
     return payload as unknown as SessionPayload;
   } catch {
     return null;
