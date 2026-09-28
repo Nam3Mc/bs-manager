@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BS-Manager
 
-## Getting Started
+**Easy Trakker for Professional Business Activities.**
 
-First, run the development server:
+BS-Manager is a web application that helps small business owners — bakeries,
+fast-food shops, and food producers — manage inventory and production while
+giving their customers a clean storefront to browse and order from.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Business owners track raw ingredients (items), define sellable products from
+those ingredients (recipes), and publish a personalized storefront. Customers
+browse a marketplace of stores, add products to a cart, and check out.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Live Demo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Production:** https://bs-manager-psi.vercel.app/
+- **Repository:** https://github.com/Nam3Mc/bs-manager
+- **Project Board:** https://github.com/users/Nam3Mc/projects/3
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Team
 
-## Learn More
+Solo project for WDD 430 — Web Full-Stack Development, BYU-Idaho.
 
-To learn more about Next.js, take a look at the following resources:
+- **Dreiser Morales** — [@Nam3Mc](https://github.com/Nam3Mc)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### For business owners (Admin role)
+- **Dashboard** — overview of items, products, and store status
+- **Inventory management** — create, edit, and delete raw items (corn, flour,
+  sugar) with units, current stock, and unit cost
+- **Product builder** — compose sellable products from items. A "500 g Corn"
+  product is defined by linking the Corn item with a quantity of 500.
+  A "1000 g Corn" product uses the same item with a different quantity.
+- **Store settings** — name, NIT, address, contact, hero image, headline,
+  and a curated color theme preset for the storefront
+- **Product images** — upload a photo per product
 
-## Deploy on Vercel
+### For customers (Client role)
+- **Marketplace** — browse a list of all active stores
+- **Store page** — a themed storefront with hero image, description, and
+  product grid
+- **Cart** — add, update, and remove products
+- **Checkout** — place an order
+- **Order history** — view past orders
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Layer | Choice |
+|---|---|
+| Framework | Next.js (App Router), TypeScript |
+| Styling | Tailwind CSS v4 (CSS-first config) |
+| Fonts | Space Grotesk (display), Inter (body), JetBrains Mono (codes) |
+| Database | PostgreSQL on Neon |
+| DB driver | `@neondatabase/serverless` (tagged-template SQL, no ORM) |
+| Auth | JWT in httpOnly cookie, bcrypt password hashing |
+| Deployment | Vercel |
+
+## Architecture
+
+### Three-layer design tokens
+
+1. **Primitives** — raw color ramps (`brand-50…900`, `accent-*`, `ink-*`),
+   defined in `@theme` inside `app/globals.css`
+2. **Semantic tokens** — CSS variables (`--surface`, `--text`, `--brand`, …)
+   that flip for dark mode and per-store themes
+3. **Tailwind utilities** — `bg-surface`, `text-muted`, `border-line`,
+   `bg-brand`, `bg-accent`
+
+Components use **only layer-3 utilities**. There are no `bg-white`,
+`text-slate-*`, or `border-gray-*` classes anywhere in the codebase. This
+is what makes dark mode and per-store theming work without any
+per-component overrides.
+
+### Data model
