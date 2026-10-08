@@ -14,6 +14,24 @@ export function slugify(input: string): string {
     .slice(0, 60);
 }
 
+export function formatCurrency(
+  amount: number | string,
+  currency = "USD",
+  locale = "en-US"
+): string {
+  const value = typeof amount === "string" ? Number(amount) : amount;
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 2,
+  }).format(value);
+}
+
+export function formatNumber(n: number | string): string {
+  const value = typeof n === "string" ? Number(n) : n;
+  return new Intl.NumberFormat("en-US").format(value);
+}
+
 /** Encode a store theme for the data-* attribute. */
 export function safeThemePreset(v: string): string {
   const allowed = ["default","bakery","butcher","produce","cafe","seafood","boutique"];
