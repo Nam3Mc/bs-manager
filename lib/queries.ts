@@ -325,3 +325,155 @@ export async function getProductStats(businessId: string): Promise<ProductStats>
     (rows[0] as ProductStats) ?? { total_count: 0, active_count: 0, avg_margin: "0" }
   );
 }
+
+/* ---------- reports ---------- */
+
+export type RevenueSummary = {
+  today: string;
+  week: string;
+  month: string;
+  all_time: string;
+  today_orders: number;
+  week_orders: number;
+  month_orders: number;
+  all_time_orders: number;
+};
+
+export type DailyRevenue = { date: string; revenue: string; orders: number };
+
+export type TopProduct = {
+  product_id: string;
+  product_name: string;
+  store_name: string;
+  units_sold: number;
+  revenue: string;
+};
+
+export type StoreRevenue = {
+  store_id: string;
+  store_name: string;
+  revenue: string;
+  orders: number;
+};
+
+export type LowStockItem = {
+  id: string;
+  name: string;
+  unit: string;
+  current_stock: string;
+  unit_cost: string;
+};
+
+const PAID_STATUSES = `('PAID','SHIPPED','DELIVERED')`;
+
+export async function getRevenueSummary(businessId: string): Promise<RevenueSummary> {
+  const rows = await sql`
+    SELECT
+      COALESCE(SUM(o.total) FILTER (WHERE o.created_at >= CURRENT_DATE), 0)::numeric AS today,
+      COALESCE(SUM(o.total) FILTER (WHERE o.created_at >= CURRENT_DATE - INTERVAL '7 days'), 0)::numeric AS week,
+      COALESCE(SUM(o.total) FILTER (WHERE o.created_at >= CURRENT_DATE - INTERVAL '30 days'), 0)::numeric AS month,
+      COALESCE(SUM(o.total), 0)::numeric AS all_time,
+      COUNT(*) FILTER (WHERE o.created_at >= CURRENT_DATE)::int AS today_orders,
+      COUNT(*) FILTER (WHERE o.created_at >= CURRENT_DATE - INTERVAL '7 days')::int AS week_orders,
+      COUNT(*) FILTER (WHERE o.created_at >= CURRENT_DATE - INTERVAL '30 days')::int AS month_orders,
+      COUNT(*)::int AS all_time_orders
+    FROM orders o
+    JOIN stores s ON s.id = o.store_id
+    WHERE s.business_id = ${businessId}
+      AND o.status IN ('PAID','SHIPPED','DELIVERED')
+  `;
+  return (
+    (rows[0] as RevenueSummary) ?? {
+      today: "0",
+      week: "0",
+      month: "0",
+      all_time: "0",
+      today_orders: 0,
+      week_orders: 0,
+      month_orders: 0,
+      all_time_orders: 0,
+    }
+  );
+}
+
+export async function getDailyRevenue(
+  businessId: string,
+  days = 30
+): Promise<DailyRevenue[]> {
+  const rows = await sql`
+    WITH days AS (
+      SELECT generate_series(
+        CURRENT_DATE - make_interval(days => ${days - 1}),
+        CURRENT_DATE,
+        '1 day'::interval
+      )::date AS day
+    )
+    SELECT
+      d.day::text AS date,
+      COALESCE(SUM(o.total), 0)::numeric AS revenue,
+      COALESCE(COUNT(o.id), 0)::int AS orders
+    FROM days d
+    LEFT JOIN orders o
+      ON o.created_at::date = d.day
+      AND o.status IN ('PAID','SHIPPED','DELIVERED')
+      AND o.store_id IN (SELECT id FROM stores WHERE business_id = ${businessId})
+    GROUP BY d.day
+    ORDER BY d.day ASC
+  `;
+  return rows as DailyRevenue[];
+}
+
+export async function getTopProducts(
+  businessId: string,
+  limit = 5
+): Promise<TopProduct[]> {
+  const rows = await sql`
+    SELECT
+      p.id AS product_id,
+      p.name AS product_name,
+      s.name AS store_name,
+      SUM(ol.quantity)::int AS units_sold,
+      SUM(ol.line_total)::numeric AS revenue
+    FROM order_lines ol
+    JOIN orders o ON o.id = ol.order_id
+    JOIN products p ON p.id = ol.product_id
+    JOIN stores s ON s.id = o.store_id
+    WHERE s.business_id = ${businessId}
+      AND o.status IN ('PAID','SHIPPED','DELIVERED')
+    GROUP BY p.id, p.name, s.name
+    ORDER BY revenue DESC
+    LIMIT ${limit}
+  `;
+  return rows as TopProduct[];
+}
+
+export async function getStoreRevenue(businessId: string): Promise<StoreRevenue[]> {
+  const rows = await sql`
+    SELECT
+      s.id AS store_id,
+      s.name AS store_name,
+      COALESCE(SUM(o.total) FILTER (WHERE o.status IN ('PAID','SHIPPED','DELIVERED')), 0)::numeric AS revenue,
+      COUNT(o.id) FILTER (WHERE o.status IN ('PAID','SHIPPED','DELIVERED'))::int AS orders
+    FROM stores s
+    LEFT JOIN orders o ON o.store_id = s.id
+    WHERE s.business_id = ${businessId}
+    GROUP BY s.id, s.name
+    ORDER BY revenue DESC
+  `;
+  return rows as StoreRevenue[];
+}
+
+export async function getLowStockItems(
+  businessId: string,
+  threshold = 10
+): Promise<LowStockItem[]> {
+  const rows = await sql`
+    SELECT id, name, unit, current_stock, unit_cost
+    FROM items
+    WHERE business_id = ${businessId}
+      AND current_stock < ${threshold}
+    ORDER BY current_stock ASC, name ASC
+    LIMIT 10
+  `;
+  return rows as LowStockItem[];
+}
