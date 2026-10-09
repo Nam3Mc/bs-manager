@@ -202,3 +202,126 @@ export async function getOrderStats(businessId: string): Promise<OrderStats> {
     }
   );
 }
+
+/* ---------- stores ---------- */
+
+export type StoreOption = { id: string; name: string; slug: string };
+
+export async function getStoresForBusiness(businessId: string): Promise<StoreOption[]> {
+  const rows = await sql`
+    SELECT id, name, slug
+    FROM stores
+    WHERE business_id = ${businessId} AND is_active = true
+    ORDER BY name ASC
+  `;
+  return rows as StoreOption[];
+}
+
+/* ---------- products ---------- */
+
+export type ProductRow = {
+  id: string;
+  store_id: string;
+  store_name: string;
+  name: string;
+  description: string | null;
+  price: string;
+  image_url: string | null;
+  is_active: boolean;
+  created_at: string;
+  derived_cost: string;
+  recipe_count: number;
+};
+
+export type RecipeLine = {
+  item_id: string;
+  item_name: string;
+  item_unit: string;
+  item_cost: string;
+  quantity: string;
+};
+
+export type ProductWithRecipe = ProductRow & { recipe: RecipeLine[] };
+
+export type ProductStats = {
+  total_count: number;
+  active_count: number;
+  avg_margin: string;
+};
+
+export async function getProducts(businessId: string): Promise<ProductRow[]> {
+  const rows = await sql`
+    SELECT
+      p.id, p.store_id, s.name AS store_name,
+      p.name, p.description, p.price, p.image_url, p.is_active, p.created_at,
+      COALESCE((
+        SELECT SUM(pi.quantity * i.unit_cost)
+        FROM product_items pi
+        JOIN items i ON i.id = pi.item_id
+        WHERE pi.product_id = p.id
+      ), 0)::numeric AS derived_cost,
+      (SELECT COUNT(*)::int FROM product_items pi WHERE pi.product_id = p.id) AS recipe_count
+    FROM products p
+    JOIN stores s ON s.id = p.store_id
+    WHERE s.business_id = ${businessId}
+    ORDER BY p.created_at DESC
+  `;
+  return rows as ProductRow[];
+}
+
+export async function getProductById(
+  productId: string,
+  businessId: string
+): Promise<ProductWithRecipe | null> {
+  const rows = await sql`
+    SELECT
+      p.id, p.store_id, s.name AS store_name,
+      p.name, p.description, p.price, p.image_url, p.is_active, p.created_at,
+      0::numeric AS derived_cost,
+      0::int AS recipe_count
+    FROM products p
+    JOIN stores s ON s.id = p.store_id
+    WHERE p.id = ${productId} AND s.business_id = ${businessId}
+    LIMIT 1
+  `;
+  const product = rows[0] as ProductRow | undefined;
+  if (!product) return null;
+
+  const recipe = await sql`
+    SELECT pi.item_id, i.name AS item_name, i.unit AS item_unit,
+           i.unit_cost AS item_cost, pi.quantity
+    FROM product_items pi
+    JOIN items i ON i.id = pi.item_id
+    WHERE pi.product_id = ${productId}
+    ORDER BY i.name ASC
+  `;
+
+  return {
+    ...product,
+    recipe: recipe as RecipeLine[],
+    recipe_count: recipe.length,
+  };
+}
+
+export async function getProductStats(businessId: string): Promise<ProductStats> {
+  const rows = await sql`
+    SELECT
+      COUNT(*)::int AS total_count,
+      COUNT(*) FILTER (WHERE p.is_active)::int AS active_count,
+      COALESCE(AVG(
+        CASE WHEN p.price > 0 THEN
+          ((p.price - COALESCE((
+            SELECT SUM(pi.quantity * i.unit_cost)
+            FROM product_items pi JOIN items i ON i.id = pi.item_id
+            WHERE pi.product_id = p.id
+          ), 0)) / p.price) * 100
+        END
+      ), 0)::numeric AS avg_margin
+    FROM products p
+    JOIN stores s ON s.id = p.store_id
+    WHERE s.business_id = ${businessId}
+  `;
+  return (
+    (rows[0] as ProductStats) ?? { total_count: 0, active_count: 0, avg_margin: "0" }
+  );
+}
