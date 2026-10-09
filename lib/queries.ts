@@ -203,20 +203,6 @@ export async function getOrderStats(businessId: string): Promise<OrderStats> {
   );
 }
 
-/* ---------- stores ---------- */
-
-export type StoreOption = { id: string; name: string; slug: string };
-
-export async function getStoresForBusiness(businessId: string): Promise<StoreOption[]> {
-  const rows = await sql`
-    SELECT id, name, slug
-    FROM stores
-    WHERE business_id = ${businessId} AND is_active = true
-    ORDER BY name ASC
-  `;
-  return rows as StoreOption[];
-}
-
 /* ---------- products ---------- */
 
 export type ProductRow = {
@@ -476,4 +462,69 @@ export async function getLowStockItems(
     LIMIT 10
   `;
   return rows as LowStockItem[];
+}
+
+/* ---------- stores ---------- */
+
+export type StoreOption = { id: string; name: string; slug: string };
+
+export async function getStoresForBusiness(businessId: string): Promise<StoreOption[]> {
+  const rows = await sql`
+    SELECT id, name, slug
+    FROM stores
+    WHERE business_id = ${businessId} AND is_active = true
+    ORDER BY name ASC
+  `;
+  return rows as StoreOption[];
+}
+
+export type StoreRow = {
+  id: string;
+  business_id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  address: string | null;
+  nit: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  theme_preset: string;
+  background_style: string;
+  hero_image_url: string | null;
+  hero_headline: string | null;
+  hero_subtext: string | null;
+  is_active: boolean;
+  created_at: string;
+  product_count: number;
+};
+
+export async function getFullStores(businessId: string): Promise<StoreRow[]> {
+  const rows = await sql`
+    SELECT
+      s.id, s.business_id, s.slug, s.name, s.description, s.address, s.nit,
+      s.contact_email, s.contact_phone, s.theme_preset, s.background_style,
+      s.hero_image_url, s.hero_headline, s.hero_subtext, s.is_active, s.created_at,
+      (SELECT COUNT(*)::int FROM products p WHERE p.store_id = s.id AND p.is_active = true) AS product_count
+    FROM stores s
+    WHERE s.business_id = ${businessId}
+    ORDER BY s.created_at DESC
+  `;
+  return rows as StoreRow[];
+}
+
+export async function getStoreById(
+  storeId: string,
+  businessId: string
+): Promise<StoreRow | null> {
+  const rows = await sql`
+    SELECT
+      s.id, s.business_id, s.slug, s.name, s.description, s.address, s.nit,
+      s.contact_email, s.contact_phone, s.theme_preset, s.background_style,
+      s.hero_image_url, s.hero_headline, s.hero_subtext, s.is_active, s.created_at,
+      (SELECT COUNT(*)::int FROM products p WHERE p.store_id = s.id AND p.is_active = true) AS product_count
+    FROM stores s
+    WHERE s.id = ${storeId} AND s.business_id = ${businessId}
+    LIMIT 1
+  `;
+  return (rows[0] as StoreRow) ?? null;
 }
