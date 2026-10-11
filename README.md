@@ -72,3 +72,25 @@ is what makes dark mode and per-store theming work without any
 per-component overrides.
 
 ### Data model
+
+## Known Issues & Opportunities
+
+- **Image uploads are URL-based.** Items, products, and stores accept an image
+  URL field. Real file upload (Vercel Blob or Cloudinary) is a planned
+  enhancement.
+- **Payment is simulated.** Checkout creates an order and reserves stock, but
+  no payment processor is integrated. Real payment (Stripe) is a next step.
+- **Reports window is fixed at 30 days.** A date-range picker is a natural
+  improvement.
+- **Out-of-stock products are visible.** Products with zero available stock
+  still appear in the marketplace with an enabled Add button. The checkout
+  guard catches the shortfall, but a UI hint would be better.
+- **Order cancellation restores stock.** Handled automatically when an admin
+  sets an order status to `Cancelled`.
+
+## AI Agent Instructions
+
+See [`.github/copilot-instructions.md`](./.github/copilot-instructions.md)
+for the design system, data model, and coding conventions this project
+follows. It is intended for GitHub Copilot and other AI coding assistants
+so they generate project-consistent code.
