@@ -50,31 +50,31 @@ export default async function OrderDetailPage({
               <CardTitle>Items</CardTitle>
             </CardHeader>
             <CardBody className="pt-4">
-              <ul className="divide-y divide-line">
+              <ul className="divide-line divide-y">
                 {order.lines.map((line) => (
                   <li
                     key={line.id}
                     className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0"
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-content">
+                      <p className="text-content truncate text-sm font-medium">
                         {line.product_name}
                       </p>
-                      <p className="num text-xs text-muted">
+                      <p className="num text-muted text-xs">
                         {formatCurrency(line.unit_price)} × {line.quantity}
                       </p>
                     </div>
-                    <div className="num shrink-0 text-sm font-medium text-content">
+                    <div className="num text-content shrink-0 text-sm font-medium">
                       {formatCurrency(line.line_total)}
                     </div>
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
+              <div className="border-line mt-4 space-y-2 border-t pt-4 text-sm">
                 <Row label="Subtotal" value={formatCurrency(order.subtotal)} />
                 <Row label="Tax" value={formatCurrency(order.tax)} />
-                <div className="flex items-center justify-between border-t border-line pt-2 text-base font-semibold text-content">
+                <div className="border-line text-content flex items-center justify-between border-t pt-2 text-base font-semibold">
                   <span>Total</span>
                   <span className="num">{formatCurrency(order.total)}</span>
                 </div>
@@ -93,9 +93,8 @@ export default async function OrderDetailPage({
                 <OrderStatusBadge status={order.status} />
               </div>
               <OrderStatusSelect orderId={order.id} current={order.status} />
-              <p className="mt-2 text-xs text-subtle">
-                Updates instantly. Customer sees the change on their order
-                history.
+              <p className="text-subtle mt-2 text-xs">
+                Updates instantly. Customer sees the change on their order history.
               </p>
             </CardBody>
           </Card>
@@ -105,8 +104,8 @@ export default async function OrderDetailPage({
               <CardTitle>Customer</CardTitle>
             </CardHeader>
             <CardBody className="pt-4 text-sm">
-              <p className="font-medium text-content">{order.customer_name}</p>
-              <p className="mt-0.5 text-muted">{order.customer_email}</p>
+              <p className="text-content font-medium">{order.customer_name}</p>
+              <p className="text-muted mt-0.5">{order.customer_email}</p>
             </CardBody>
           </Card>
 
@@ -115,7 +114,7 @@ export default async function OrderDetailPage({
               <CardTitle>Store</CardTitle>
             </CardHeader>
             <CardBody className="pt-4 text-sm">
-              <p className="font-medium text-content">{order.store_name}</p>
+              <p className="text-content font-medium">{order.store_name}</p>
             </CardBody>
           </Card>
         </div>
@@ -124,7 +123,7 @@ export default async function OrderDetailPage({
       <div className="mt-6">
         <Link
           href="/admin/orders"
-          className="text-sm font-medium text-brand hover:text-brand-hover"
+          className="text-brand hover:text-brand-hover text-sm font-medium"
         >
           ← Back to orders
         </Link>
@@ -135,7 +134,7 @@ export default async function OrderDetailPage({
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between text-muted">
+    <div className="text-muted flex items-center justify-between">
       <span>{label}</span>
       <span className="num">{value}</span>
     </div>

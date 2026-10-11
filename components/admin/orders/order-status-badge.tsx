@@ -1,7 +1,10 @@
 import { cn } from "@/lib/utils";
 import type { OrderStatus } from "@/lib/queries";
 
-const STYLES: Record<OrderStatus, { bg: string; text: string; dot: string; label: string }> = {
+const STYLES: Record<
+  OrderStatus,
+  { bg: string; text: string; dot: string; label: string }
+> = {
   PENDING: {
     bg: "bg-warning/10",
     text: "text-warning",

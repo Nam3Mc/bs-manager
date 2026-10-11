@@ -32,7 +32,7 @@ export function DeleteStoreButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-danger/10 hover:text-danger"
+        className="text-muted hover:bg-danger/10 hover:text-danger rounded-lg px-3 py-1.5 text-xs font-medium transition-colors duration-150"
       >
         Delete
       </button>
@@ -48,23 +48,23 @@ export function DeleteStoreButton({
             role="dialog"
             aria-modal="true"
             aria-labelledby={`dels-${storeId}`}
-            className="relative w-full max-w-md rounded-xl border border-line bg-raised p-6 shadow-lg"
+            className="border-line bg-raised relative w-full max-w-md rounded-xl border p-6 shadow-lg"
           >
             <h2
               id={`dels-${storeId}`}
-              className="font-display text-lg font-semibold text-content"
+              className="font-display text-content text-lg font-semibold"
             >
               Delete store
             </h2>
-            <p className="mt-2 text-sm text-muted">
-              Delete <span className="font-medium text-content">{storeName}</span>?
-              This cannot be undone.
+            <p className="text-muted mt-2 text-sm">
+              Delete <span className="text-content font-medium">{storeName}</span>? This
+              cannot be undone.
             </p>
 
             {error && (
               <p
                 role="alert"
-                className="mt-4 rounded-lg border border-danger/40 bg-danger/5 px-3 py-2 text-sm text-danger"
+                className="border-danger/40 bg-danger/5 text-danger mt-4 rounded-lg border px-3 py-2 text-sm"
               >
                 {error}
               </p>

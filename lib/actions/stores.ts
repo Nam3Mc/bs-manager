@@ -13,7 +13,10 @@ import {
   type BackgroundStyle,
 } from "@/lib/store-themes";
 
-export type StoreFormState = { error?: string; fieldErrors?: Record<string, string> } | null;
+export type StoreFormState = {
+  error?: string;
+  fieldErrors?: Record<string, string>;
+} | null;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,7 +48,9 @@ function parseStoreForm(formData: FormData) {
   const themeRaw = String(formData.get("themePreset") ?? "default");
   const bgRaw = String(formData.get("backgroundStyle") ?? "plain");
   const themePreset: ThemePreset = isValidThemePreset(themeRaw) ? themeRaw : "default";
-  const backgroundStyle: BackgroundStyle = isValidBackgroundStyle(bgRaw) ? bgRaw : "plain";
+  const backgroundStyle: BackgroundStyle = isValidBackgroundStyle(bgRaw)
+    ? bgRaw
+    : "plain";
 
   const heroImageUrl = String(formData.get("heroImageUrl") ?? "").trim() || null;
   const heroHeadline = String(formData.get("heroHeadline") ?? "").trim() || null;

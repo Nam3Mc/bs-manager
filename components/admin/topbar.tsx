@@ -12,13 +12,13 @@ export function Topbar({
   onMenuClick?: () => void;
 }) {
   return (
-    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b border-line bg-surface/80 px-4 backdrop-blur sm:px-6 lg:px-8">
+    <header className="border-line bg-surface/80 sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b px-4 backdrop-blur sm:px-6 lg:px-8">
       {onMenuClick && (
         <button
           type="button"
           onClick={onMenuClick}
           aria-label="Open navigation"
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors duration-150 hover:bg-hover hover:text-content focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
+          className="text-muted hover:bg-hover hover:text-content focus-visible:ring-ring flex h-9 w-9 items-center justify-center rounded-lg transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none md:hidden"
         >
           <MenuIcon />
         </button>

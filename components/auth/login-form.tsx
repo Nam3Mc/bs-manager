@@ -61,7 +61,10 @@ export function LoginForm({ next }: { next?: string }) {
         label="Password"
         htmlFor="password"
         action={
-          <Link href="/forgot-password" className="text-xs font-medium text-brand hover:text-brand-hover">
+          <Link
+            href="/forgot-password"
+            className="text-brand hover:text-brand-hover text-xs font-medium"
+          >
             Forgot?
           </Link>
         }
@@ -79,12 +82,21 @@ export function LoginForm({ next }: { next?: string }) {
       </Field>
 
       {error && (
-        <p role="alert" className="rounded-lg border border-danger/40 bg-danger/5 px-3 py-2 text-sm text-danger">
+        <p
+          role="alert"
+          className="border-danger/40 bg-danger/5 text-danger rounded-lg border px-3 py-2 text-sm"
+        >
           {error}
         </p>
       )}
 
-      <Button type="submit" variant="primary" size="lg" disabled={loading} className="w-full">
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        disabled={loading}
+        className="w-full"
+      >
         {loading ? "Signing in…" : "Sign in"}
       </Button>
     </form>
@@ -105,7 +117,9 @@ function Field({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <label htmlFor={htmlFor} className="text-sm font-medium text-content">{label}</label>
+        <label htmlFor={htmlFor} className="text-content text-sm font-medium">
+          {label}
+        </label>
         {action}
       </div>
       {children}

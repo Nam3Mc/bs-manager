@@ -22,9 +22,7 @@ async function computeRequiredItems(
     WHERE product_id = ANY(${productIds}::uuid[])
   `;
 
-  const qtyByProduct = new Map(
-    productQuantities.map((p) => [p.productId, p.quantity])
-  );
+  const qtyByProduct = new Map(productQuantities.map((p) => [p.productId, p.quantity]));
 
   for (const row of rows) {
     const productId = row.product_id as string;
@@ -62,9 +60,7 @@ export async function reserveStock(
     const required = needed.get(itemId)!;
     const available = Number(item.current_stock);
     if (available < required) {
-      insufficient.push(
-        `${item.name as string} (need ${required}, have ${available})`
-      );
+      insufficient.push(`${item.name as string} (need ${required}, have ${available})`);
     }
   }
 
@@ -97,9 +93,7 @@ export async function reserveStock(
  * Increment current_stock back. Used when an order is cancelled.
  * Never fails on shortage — this is the reverse direction.
  */
-export async function releaseStock(
-  productQuantities: ProductQuantity[]
-): Promise<void> {
+export async function releaseStock(productQuantities: ProductQuantity[]): Promise<void> {
   const needed = await computeRequiredItems(productQuantities);
   if (needed.size === 0) return;
 

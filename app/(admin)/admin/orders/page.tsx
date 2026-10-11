@@ -48,10 +48,7 @@ export default async function OrdersPage({
 
   return (
     <>
-      <PageHeader
-        title="Orders"
-        description="Customer orders across all your stores."
-      />
+      <PageHeader title="Orders" description="Customer orders across all your stores." />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard

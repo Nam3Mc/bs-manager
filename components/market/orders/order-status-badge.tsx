@@ -5,11 +5,26 @@ const STYLES: Record<
   OrderStatus,
   { bg: string; text: string; dot: string; label: string }
 > = {
-  PENDING: { bg: "bg-warning/10", text: "text-warning", dot: "bg-warning", label: "Pending" },
+  PENDING: {
+    bg: "bg-warning/10",
+    text: "text-warning",
+    dot: "bg-warning",
+    label: "Pending",
+  },
   PAID: { bg: "bg-info/10", text: "text-info", dot: "bg-info", label: "Paid" },
   SHIPPED: { bg: "bg-brand-soft", text: "text-brand", dot: "bg-brand", label: "Shipped" },
-  DELIVERED: { bg: "bg-success/10", text: "text-success", dot: "bg-success", label: "Delivered" },
-  CANCELLED: { bg: "bg-danger/10", text: "text-danger", dot: "bg-danger", label: "Cancelled" },
+  DELIVERED: {
+    bg: "bg-success/10",
+    text: "text-success",
+    dot: "bg-success",
+    label: "Delivered",
+  },
+  CANCELLED: {
+    bg: "bg-danger/10",
+    text: "text-danger",
+    dot: "bg-danger",
+    label: "Cancelled",
+  },
 };
 
 export function OrderStatusBadge({ status }: { status: OrderStatus }) {

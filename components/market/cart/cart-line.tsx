@@ -4,10 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/utils";
-import {
-  updateCartQuantityAction,
-  removeFromCartAction,
-} from "@/lib/actions/cart";
+import { updateCartQuantityAction, removeFromCartAction } from "@/lib/actions/cart";
 import { cn } from "@/lib/utils";
 import type { CartLine as CartLineType } from "@/lib/queries";
 
@@ -52,7 +49,7 @@ export function CartLine({ line }: { line: CartLineType }) {
       {/* Thumb */}
       <Link
         href={`/market/${line.store_slug}`}
-        className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-sunken"
+        className="bg-sunken relative h-20 w-20 shrink-0 overflow-hidden rounded-lg"
       >
         {line.product_image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -62,8 +59,8 @@ export function CartLine({ line }: { line: CartLineType }) {
             className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-brand-soft">
-            <span className="text-lg font-display font-bold text-brand/40">
+          <div className="bg-brand-soft flex h-full w-full items-center justify-center">
+            <span className="font-display text-brand/40 text-lg font-bold">
               {line.product_name.charAt(0).toUpperCase()}
             </span>
           </div>
@@ -74,42 +71,40 @@ export function CartLine({ line }: { line: CartLineType }) {
       <div className="min-w-0 flex-1">
         <Link
           href={`/market/${line.store_slug}`}
-          className="text-[11px] font-medium uppercase tracking-wider text-brand hover:text-brand-hover"
+          className="text-brand hover:text-brand-hover text-[11px] font-medium tracking-wider uppercase"
         >
           {line.store_name}
         </Link>
-        <h3 className="mt-0.5 truncate text-sm font-semibold text-content">
+        <h3 className="text-content mt-0.5 truncate text-sm font-semibold">
           {line.product_name}
         </h3>
-        <p className="num mt-0.5 text-xs text-muted">
-          {formatCurrency(price)} each
-        </p>
+        <p className="num text-muted mt-0.5 text-xs">{formatCurrency(price)} each</p>
 
         {error && (
-          <p role="alert" className="mt-1 text-xs text-danger">
+          <p role="alert" className="text-danger mt-1 text-xs">
             {error}
           </p>
         )}
 
         {/* Quantity + remove */}
         <div className="mt-3 flex items-center gap-3">
-          <div className="inline-flex items-center rounded-lg border border-line bg-raised">
+          <div className="border-line bg-raised inline-flex items-center rounded-lg border">
             <button
               type="button"
               onClick={() => updateQty(quantity - 1)}
               disabled={pending || quantity <= 1}
               aria-label="Decrease quantity"
               className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-l-lg text-muted",
+                "text-muted flex h-8 w-8 items-center justify-center rounded-l-lg",
                 "transition-colors duration-150",
                 "hover:bg-hover hover:text-content",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
                 "disabled:opacity-40 disabled:hover:bg-transparent"
               )}
             >
               −
             </button>
-            <span className="num w-8 text-center text-sm font-medium text-content">
+            <span className="num text-content w-8 text-center text-sm font-medium">
               {quantity}
             </span>
             <button
@@ -118,10 +113,10 @@ export function CartLine({ line }: { line: CartLineType }) {
               disabled={pending || quantity >= 999}
               aria-label="Increase quantity"
               className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-r-lg text-muted",
+                "text-muted flex h-8 w-8 items-center justify-center rounded-r-lg",
                 "transition-colors duration-150",
                 "hover:bg-hover hover:text-content",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
                 "disabled:opacity-40 disabled:hover:bg-transparent"
               )}
             >
@@ -133,7 +128,7 @@ export function CartLine({ line }: { line: CartLineType }) {
             type="button"
             onClick={remove}
             disabled={pending}
-            className="text-xs font-medium text-muted transition-colors duration-150 hover:text-danger disabled:opacity-50"
+            className="text-muted hover:text-danger text-xs font-medium transition-colors duration-150 disabled:opacity-50"
           >
             Remove
           </button>
@@ -141,7 +136,7 @@ export function CartLine({ line }: { line: CartLineType }) {
       </div>
 
       {/* Line total */}
-      <div className="num shrink-0 text-right text-sm font-semibold text-content">
+      <div className="num text-content shrink-0 text-right text-sm font-semibold">
         {formatCurrency(lineTotal)}
       </div>
     </li>

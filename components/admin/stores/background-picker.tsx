@@ -31,10 +31,17 @@ export function BackgroundPicker({
             >
               <BackgroundSwatch style={bg.value} />
               <div className="min-w-0">
-                <p className={cn("text-xs font-semibold", active ? "text-brand" : "text-content")}>
+                <p
+                  className={cn(
+                    "text-xs font-semibold",
+                    active ? "text-brand" : "text-content"
+                  )}
+                >
                   {bg.label}
                 </p>
-                <p className="mt-0.5 text-[10px] leading-tight text-muted">{bg.description}</p>
+                <p className="text-muted mt-0.5 text-[10px] leading-tight">
+                  {bg.description}
+                </p>
               </div>
             </button>
           );

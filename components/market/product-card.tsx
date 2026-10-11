@@ -4,8 +4,8 @@ import { AddToCartButton } from "./add-to-cart-button";
 
 export function ProductCard({ product }: { product: PublicProduct }) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl border border-line bg-raised shadow-sm transition-all duration-200 hover:shadow-md">
-      <div className="relative aspect-square overflow-hidden bg-sunken">
+    <div className="group border-line bg-raised flex flex-col overflow-hidden rounded-xl border shadow-sm transition-all duration-200 hover:shadow-md">
+      <div className="bg-sunken relative aspect-square overflow-hidden">
         {product.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -14,8 +14,8 @@ export function ProductCard({ product }: { product: PublicProduct }) {
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-brand-soft">
-            <span className="text-3xl font-display font-bold text-brand/40">
+          <div className="bg-brand-soft flex h-full w-full items-center justify-center">
+            <span className="font-display text-brand/40 text-3xl font-bold">
               {product.name.charAt(0).toUpperCase()}
             </span>
           </div>
@@ -24,13 +24,11 @@ export function ProductCard({ product }: { product: PublicProduct }) {
 
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex-1">
-          <h3 className="text-sm font-semibold text-content line-clamp-2">
+          <h3 className="text-content line-clamp-2 text-sm font-semibold">
             {product.name}
           </h3>
           {product.description && (
-            <p className="mt-1 text-xs text-muted line-clamp-2">
-              {product.description}
-            </p>
+            <p className="text-muted mt-1 line-clamp-2 text-xs">{product.description}</p>
           )}
         </div>
 

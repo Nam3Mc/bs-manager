@@ -70,8 +70,8 @@ export function RecipeBuilder({ availableItems, lines, onChange }: RecipeBuilder
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-content">Recipe</p>
-          <p className="text-xs text-subtle">
+          <p className="text-content text-sm font-medium">Recipe</p>
+          <p className="text-subtle text-xs">
             Which items and how much of each go into one unit of this product.
           </p>
         </div>
@@ -88,12 +88,13 @@ export function RecipeBuilder({ availableItems, lines, onChange }: RecipeBuilder
       </div>
 
       {availableItems.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-line p-4 text-center text-sm text-muted">
+        <div className="border-line text-muted rounded-lg border border-dashed p-4 text-center text-sm">
           You haven&apos;t added any items yet.
         </div>
       ) : lines.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-line p-6 text-center text-sm text-muted">
-          No items in the recipe. This product is a passthrough SKU (no manufacturing cost).
+        <div className="border-line text-muted rounded-lg border border-dashed p-6 text-center text-sm">
+          No items in the recipe. This product is a passthrough SKU (no manufacturing
+          cost).
         </div>
       ) : (
         <ul className="space-y-2">
@@ -101,14 +102,12 @@ export function RecipeBuilder({ availableItems, lines, onChange }: RecipeBuilder
             const item = itemMap.get(line.itemId);
             const qty = Number(line.quantity);
             const subtotal =
-              item && Number.isFinite(qty) && qty > 0
-                ? qty * Number(item.unit_cost)
-                : 0;
+              item && Number.isFinite(qty) && qty > 0 ? qty * Number(item.unit_cost) : 0;
 
             return (
               <li
                 key={line.key}
-                className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg border border-line bg-surface p-2"
+                className="border-line bg-surface grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 rounded-lg border p-2"
               >
                 <Select
                   value={line.itemId}
@@ -118,7 +117,8 @@ export function RecipeBuilder({ availableItems, lines, onChange }: RecipeBuilder
                   <option value="">Select an item…</option>
                   {availableItems.map((i) => (
                     <option key={i.id} value={i.id}>
-                      {i.name} ({formatCurrency(i.unit_cost)}/{UNIT_LABEL[i.unit] ?? i.unit})
+                      {i.name} ({formatCurrency(i.unit_cost)}/
+                      {UNIT_LABEL[i.unit] ?? i.unit})
                     </option>
                   ))}
                 </Select>
@@ -135,13 +135,13 @@ export function RecipeBuilder({ availableItems, lines, onChange }: RecipeBuilder
                     className="num w-24"
                   />
                   {item && (
-                    <span className="text-xs text-subtle">
+                    <span className="text-subtle text-xs">
                       {UNIT_LABEL[item.unit] ?? item.unit}
                     </span>
                   )}
                 </div>
 
-                <div className="num w-20 text-right text-sm text-muted">
+                <div className="num text-muted w-20 text-right text-sm">
                   {subtotal > 0 ? formatCurrency(subtotal) : "—"}
                 </div>
 
@@ -149,7 +149,7 @@ export function RecipeBuilder({ availableItems, lines, onChange }: RecipeBuilder
                   type="button"
                   onClick={() => remove(index)}
                   aria-label="Remove row"
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors duration-150 hover:bg-danger/10 hover:text-danger"
+                  className="text-muted hover:bg-danger/10 hover:text-danger flex h-8 w-8 items-center justify-center rounded-lg transition-colors duration-150"
                 >
                   <CloseIcon className="h-4 w-4" />
                 </button>
@@ -159,9 +159,11 @@ export function RecipeBuilder({ availableItems, lines, onChange }: RecipeBuilder
         </ul>
       )}
 
-      <div className="flex items-center justify-end gap-3 border-t border-line pt-3 text-sm">
+      <div className="border-line flex items-center justify-end gap-3 border-t pt-3 text-sm">
         <span className="text-muted">Derived cost:</span>
-        <span className="num font-semibold text-content">{formatCurrency(derivedCost)}</span>
+        <span className="num text-content font-semibold">
+          {formatCurrency(derivedCost)}
+        </span>
       </div>
     </div>
   );

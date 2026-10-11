@@ -38,9 +38,24 @@ export default async function ProductsPage() {
       />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="Total products" value={formatNumber(stats.total_count)} hint="All SKUs" icon={<TagIcon />} accent />
-        <StatCard label="Active" value={formatNumber(stats.active_count)} hint="Visible to customers" />
-        <StatCard label="Avg margin" value={`${Number(stats.avg_margin).toFixed(1)}%`} hint="Across all products" icon={<ChartIcon />} />
+        <StatCard
+          label="Total products"
+          value={formatNumber(stats.total_count)}
+          hint="All SKUs"
+          icon={<TagIcon />}
+          accent
+        />
+        <StatCard
+          label="Active"
+          value={formatNumber(stats.active_count)}
+          hint="Visible to customers"
+        />
+        <StatCard
+          label="Avg margin"
+          value={`${Number(stats.avg_margin).toFixed(1)}%`}
+          hint="Across all products"
+          icon={<ChartIcon />}
+        />
       </div>
 
       <div className="mt-6">

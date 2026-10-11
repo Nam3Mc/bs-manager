@@ -17,15 +17,15 @@ export function CartTotals({
 
   return (
     <div className="space-y-2 text-sm">
-      <div className="flex items-center justify-between text-muted">
+      <div className="text-muted flex items-center justify-between">
         <span>Subtotal</span>
         <span className="num">{formatCurrency(sub)}</span>
       </div>
-      <div className="flex items-center justify-between text-muted">
+      <div className="text-muted flex items-center justify-between">
         <span>{taxLabel}</span>
         <span className="num">{formatCurrency(tax)}</span>
       </div>
-      <div className="flex items-center justify-between border-t border-line pt-3 text-base font-semibold text-content">
+      <div className="border-line text-content flex items-center justify-between border-t pt-3 text-base font-semibold">
         <span>Total</span>
         <span className="num">{formatCurrency(total)}</span>
       </div>

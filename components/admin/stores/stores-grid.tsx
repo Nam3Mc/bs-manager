@@ -36,10 +36,13 @@ export function StoresGrid({ stores }: { stores: StoreRow[] }) {
         const theme = themeDef(store.theme_preset);
         return (
           <li key={store.id} className="group">
-            <div className="overflow-hidden rounded-xl border border-line bg-raised shadow-sm transition-colors duration-150 hover:bg-hover">
+            <div className="border-line bg-raised hover:bg-hover overflow-hidden rounded-xl border shadow-sm transition-colors duration-150">
               {/* Theme swatch strip */}
               <div className="flex h-1">
-                <span className="flex-1" style={{ backgroundColor: theme.swatch.accent }} />
+                <span
+                  className="flex-1"
+                  style={{ backgroundColor: theme.swatch.accent }}
+                />
                 <span className="flex-1" style={{ backgroundColor: theme.swatch.bg }} />
                 <span className="flex-1" style={{ backgroundColor: theme.swatch.text }} />
               </div>
@@ -49,18 +52,18 @@ export function StoresGrid({ stores }: { stores: StoreRow[] }) {
                   <div className="min-w-0">
                     <Link
                       href={`/admin/stores/${store.id}/edit`}
-                      className="block truncate font-display text-base font-semibold text-content hover:text-brand"
+                      className="font-display text-content hover:text-brand block truncate text-base font-semibold"
                     >
                       {store.name}
                     </Link>
-                    <p className="mt-0.5 font-mono text-xs text-subtle">
+                    <p className="text-subtle mt-0.5 font-mono text-xs">
                       /market/{store.slug}
                     </p>
                   </div>
 
                   <span
                     className={cn(
-                      "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider",
+                      "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase",
                       store.is_active
                         ? "bg-success/10 text-success"
                         : "bg-ink-500/10 text-muted"
@@ -71,12 +74,12 @@ export function StoresGrid({ stores }: { stores: StoreRow[] }) {
                 </div>
 
                 {store.description && (
-                  <p className="mt-3 line-clamp-2 text-sm text-muted">
+                  <p className="text-muted mt-3 line-clamp-2 text-sm">
                     {store.description}
                   </p>
                 )}
 
-                <div className="mt-4 flex items-center justify-between text-xs text-muted">
+                <div className="text-muted mt-4 flex items-center justify-between text-xs">
                   <span className="num">
                     {formatNumber(store.product_count)} product
                     {store.product_count === 1 ? "" : "s"}
@@ -87,7 +90,7 @@ export function StoresGrid({ stores }: { stores: StoreRow[] }) {
                 <div className="mt-4 flex items-center justify-end gap-1">
                   <Link
                     href={`/admin/stores/${store.id}/edit`}
-                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-hover hover:text-content"
+                    className="text-muted hover:bg-hover hover:text-content rounded-lg px-3 py-1.5 text-xs font-medium transition-colors duration-150"
                   >
                     Edit
                   </Link>

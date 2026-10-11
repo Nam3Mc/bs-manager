@@ -15,16 +15,14 @@ interface MarketShellProps {
 }
 
 /** Paths under /market that are NOT store slugs. */
-const RESERVED_MARKET_PATHS = [
-  "/market/orders",
-  "/market/cart",
-  "/market/checkout",
-];
+const RESERVED_MARKET_PATHS = ["/market/orders", "/market/cart", "/market/checkout"];
 
 function isMarketplaceActive(pathname: string): boolean {
   if (pathname === "/market") return true;
   if (!pathname.startsWith("/market/")) return false;
-  return !RESERVED_MARKET_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
+  return !RESERVED_MARKET_PATHS.some(
+    (p) => pathname === p || pathname.startsWith(p + "/")
+  );
 }
 
 function isOrdersActive(pathname: string): boolean {
@@ -38,23 +36,32 @@ export function MarketShell({ session, cartCount, children }: MarketShellProps) 
   const ordersActive = isOrdersActive(pathname);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-surface">
-      <header className="sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur">
+    <div className="bg-surface flex min-h-dvh flex-col">
+      <header className="border-line bg-surface/85 sticky top-0 z-40 border-b backdrop-blur">
         <nav className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link
             href="/market"
-            className="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            className="focus-visible:ring-ring focus-visible:ring-offset-surface flex shrink-0 items-center gap-2 rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <span
               aria-hidden
-              className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-brand-contrast"
+              className="bg-brand text-brand-contrast flex h-8 w-8 items-center justify-center rounded-lg"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M3 7h18M3 12h18M3 17h12" />
               </svg>
             </span>
-            <span className="hidden font-display text-base font-semibold tracking-tight text-content md:inline">
+            <span className="font-display text-content hidden text-base font-semibold tracking-tight md:inline">
               BS-Manager
             </span>
           </Link>
@@ -84,18 +91,18 @@ export function MarketShell({ session, cartCount, children }: MarketShellProps) 
               aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
               className={cn(
                 "relative flex h-9 w-9 items-center justify-center rounded-lg",
-                "border border-line bg-raised text-muted",
+                "border-line bg-raised text-muted border",
                 "transition-colors duration-150 ease-out",
                 "hover:bg-hover hover:text-content",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                "focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
+                "focus-visible:ring-offset-surface focus-visible:ring-offset-2"
               )}
             >
               <CartIcon />
               {cartCount > 0 && (
                 <span
                   aria-hidden
-                  className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold text-accent-contrast"
+                  className="bg-accent text-accent-contrast absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-semibold"
                 >
                   {cartCount > 99 ? "99+" : cartCount}
                 </span>
@@ -109,8 +116,8 @@ export function MarketShell({ session, cartCount, children }: MarketShellProps) 
 
       <div className="flex-1">{children}</div>
 
-      <footer className="border-t border-line bg-sunken">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm text-muted sm:flex-row sm:px-6 lg:px-8">
+      <footer className="border-line bg-sunken border-t">
+        <div className="text-muted mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm sm:flex-row sm:px-6 lg:px-8">
           <p>© {new Date().getFullYear()} BS-Manager</p>
           <p className="text-xs">WDD 430 course project</p>
         </div>
@@ -135,8 +142,8 @@ function NavLink({
       className={cn(
         "inline-flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium",
         "transition-colors duration-150 ease-out",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        "focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+        "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
+        "focus-visible:ring-offset-surface focus-visible:ring-offset-2",
         active
           ? "bg-brand-soft text-brand"
           : "text-muted hover:bg-hover hover:text-content"

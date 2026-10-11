@@ -36,7 +36,7 @@ export default async function ClientOrderDetailPage({
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
         href="/market/orders"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-content"
+        className="text-muted hover:text-content mb-6 inline-flex items-center gap-1.5 text-sm transition-colors"
       >
         <ArrowLeftIcon className="h-4 w-4" />
         All orders
@@ -44,10 +44,10 @@ export default async function ClientOrderDetailPage({
 
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-content">
+          <h1 className="font-display text-content text-3xl font-bold tracking-tight">
             Order #{shortId}
           </h1>
-          <p className="mt-1 text-sm text-muted">
+          <p className="text-muted mt-1 text-sm">
             Placed {formatDateTime(order.created_at)}
           </p>
         </div>
@@ -60,38 +60,38 @@ export default async function ClientOrderDetailPage({
             <CardTitle className="text-base">{order.store_name}</CardTitle>
             <Link
               href={`/market`}
-              className="text-xs font-medium text-brand hover:text-brand-hover"
+              className="text-brand hover:text-brand-hover text-xs font-medium"
             >
               Visit store
             </Link>
           </div>
         </CardHeader>
         <CardBody className="pt-3">
-          <ul className="divide-y divide-line">
+          <ul className="divide-line divide-y">
             {order.lines.map((line) => (
               <li
                 key={line.id}
                 className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-content">
+                  <p className="text-content truncate text-sm font-medium">
                     {line.product_name}
                   </p>
-                  <p className="num text-xs text-muted">
+                  <p className="num text-muted text-xs">
                     {formatCurrency(line.unit_price)} × {line.quantity}
                   </p>
                 </div>
-                <span className="num shrink-0 text-sm font-medium text-content">
+                <span className="num text-content shrink-0 text-sm font-medium">
                   {formatCurrency(line.line_total)}
                 </span>
               </li>
             ))}
           </ul>
 
-          <div className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
+          <div className="border-line mt-4 space-y-2 border-t pt-4 text-sm">
             <Row label="Subtotal" value={formatCurrency(order.subtotal)} />
             <Row label="Tax" value={formatCurrency(order.tax)} />
-            <div className="flex items-center justify-between border-t border-line pt-2 text-base font-semibold text-content">
+            <div className="border-line text-content flex items-center justify-between border-t pt-2 text-base font-semibold">
               <span>Total</span>
               <span className="num">{formatCurrency(order.total)}</span>
             </div>
@@ -99,7 +99,7 @@ export default async function ClientOrderDetailPage({
         </CardBody>
       </Card>
 
-      <p className="mt-6 text-center text-xs text-subtle">
+      <p className="text-subtle mt-6 text-center text-xs">
         Updates from the store will appear here.
       </p>
     </main>
@@ -108,7 +108,7 @@ export default async function ClientOrderDetailPage({
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between text-muted">
+    <div className="text-muted flex items-center justify-between">
       <span>{label}</span>
       <span className="num">{value}</span>
     </div>

@@ -37,7 +37,7 @@ export function PlaceOrderButton({ disabled }: { disabled?: boolean }) {
       {error && (
         <p
           role="alert"
-          className="rounded-lg border border-danger/40 bg-danger/5 px-3 py-2 text-sm text-danger"
+          className="border-danger/40 bg-danger/5 text-danger rounded-lg border px-3 py-2 text-sm"
         >
           {error}
         </p>

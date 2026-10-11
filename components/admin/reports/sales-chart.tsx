@@ -13,23 +13,21 @@ export function SalesChart({ data }: { data: DailyRevenue[] }) {
     <div>
       <div className="mb-4 flex items-baseline justify-between">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-subtle">
+          <p className="text-subtle text-xs font-medium tracking-wider uppercase">
             Last 30 days
           </p>
-          <p className="num mt-1 font-display text-2xl font-bold tracking-tight text-content">
+          <p className="num font-display text-content mt-1 text-2xl font-bold tracking-tight">
             {formatCurrency(total)}
           </p>
         </div>
-        <p className="num text-xs text-muted">
-          peak {formatCurrency(max)}
-        </p>
+        <p className="num text-muted text-xs">peak {formatCurrency(max)}</p>
       </div>
 
       <div className="relative h-40 w-full">
         {/* gridlines */}
         <div className="absolute inset-0 flex flex-col justify-between" aria-hidden>
           {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="border-t border-line/60" />
+            <div key={i} className="border-line/60 border-t" />
           ))}
         </div>
 
@@ -45,9 +43,7 @@ export function SalesChart({ data }: { data: DailyRevenue[] }) {
                 title={`${d.date}: ${formatCurrency(revenue)} (${d.orders} order${d.orders === 1 ? "" : "s"})`}
                 className={[
                   "group relative flex-1 rounded-t transition-colors duration-150",
-                  isZero
-                    ? "bg-line/40"
-                    : "bg-brand hover:bg-brand-hover",
+                  isZero ? "bg-line/40" : "bg-brand hover:bg-brand-hover",
                 ].join(" ")}
                 style={{ height: `${Math.max(pct, 2)}%` }}
               />
@@ -56,7 +52,7 @@ export function SalesChart({ data }: { data: DailyRevenue[] }) {
         </div>
       </div>
 
-      <div className="mt-2 flex justify-between text-xs text-subtle">
+      <div className="text-subtle mt-2 flex justify-between text-xs">
         <span>{firstLabel}</span>
         <span>{midLabel}</span>
         <span>{lastLabel}</span>

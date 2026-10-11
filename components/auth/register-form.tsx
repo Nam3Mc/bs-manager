@@ -48,7 +48,7 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div className="space-y-1.5">
-        <span className="text-sm font-medium text-content">I am a…</span>
+        <span className="text-content text-sm font-medium">I am a…</span>
         <div className="grid grid-cols-2 gap-2">
           <RoleCard
             active={role === "CLIENT"}
@@ -105,12 +105,21 @@ export function RegisterForm() {
       </Field>
 
       {error && (
-        <p role="alert" className="rounded-lg border border-danger/40 bg-danger/5 px-3 py-2 text-sm text-danger">
+        <p
+          role="alert"
+          className="border-danger/40 bg-danger/5 text-danger rounded-lg border px-3 py-2 text-sm"
+        >
           {error}
         </p>
       )}
 
-      <Button type="submit" variant="primary" size="lg" disabled={loading} className="w-full">
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        disabled={loading}
+        className="w-full"
+      >
         {loading ? "Creating account…" : "Create account"}
       </Button>
     </form>
@@ -138,10 +147,12 @@ function RoleCard({
         active ? "border-brand bg-brand-soft" : "border-line bg-raised hover:bg-hover"
       )}
     >
-      <span className={cn("text-sm font-semibold", active ? "text-brand" : "text-content")}>
+      <span
+        className={cn("text-sm font-semibold", active ? "text-brand" : "text-content")}
+      >
         {title}
       </span>
-      <span className="mt-1 text-xs text-muted">{body}</span>
+      <span className="text-muted mt-1 text-xs">{body}</span>
     </button>
   );
 }
@@ -160,8 +171,10 @@ function Field({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <label htmlFor={htmlFor} className="text-sm font-medium text-content">{label}</label>
-        {hint && <span className="text-xs text-subtle">{hint}</span>}
+        <label htmlFor={htmlFor} className="text-content text-sm font-medium">
+          {label}
+        </label>
+        {hint && <span className="text-subtle text-xs">{hint}</span>}
       </div>
       {children}
     </div>

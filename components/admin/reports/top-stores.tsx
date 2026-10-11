@@ -4,7 +4,7 @@ import type { StoreRevenue } from "@/lib/queries";
 export function TopStores({ stores }: { stores: StoreRevenue[] }) {
   if (stores.length === 0) {
     return (
-      <p className="py-6 text-center text-sm text-muted">
+      <p className="text-muted py-6 text-center text-sm">
         You haven&apos;t created a store yet.
       </p>
     );
@@ -19,18 +19,18 @@ export function TopStores({ stores }: { stores: StoreRevenue[] }) {
         return (
           <li key={s.store_id}>
             <div className="flex items-baseline justify-between gap-3">
-              <p className="truncate text-sm font-medium text-content">{s.store_name}</p>
-              <p className="num shrink-0 text-sm font-semibold text-content">
+              <p className="text-content truncate text-sm font-medium">{s.store_name}</p>
+              <p className="num text-content shrink-0 text-sm font-semibold">
                 {formatCurrency(s.revenue)}
               </p>
             </div>
-            <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-sunken">
+            <div className="bg-sunken mt-1.5 h-1.5 w-full overflow-hidden rounded-full">
               <div
-                className="h-full rounded-full bg-brand transition-all duration-300"
+                className="bg-brand h-full rounded-full transition-all duration-300"
                 style={{ width: `${Math.max(pct, 2)}%` }}
               />
             </div>
-            <p className="mt-1 text-xs text-subtle">
+            <p className="text-subtle mt-1 text-xs">
               {formatNumber(s.orders)} order{s.orders === 1 ? "" : "s"}
             </p>
           </li>

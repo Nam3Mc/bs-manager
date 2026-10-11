@@ -1,11 +1,5 @@
 export type ThemePreset =
-  | "default"
-  | "bakery"
-  | "butcher"
-  | "produce"
-  | "cafe"
-  | "seafood"
-  | "boutique";
+  "default" | "bakery" | "butcher" | "produce" | "cafe" | "seafood" | "boutique";
 
 export type BackgroundStyle = "plain" | "grid" | "gradient" | "noise";
 

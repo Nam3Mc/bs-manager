@@ -12,11 +12,11 @@ const base =
   "disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
-  primary:   "bg-brand text-brand-contrast hover:bg-brand-hover",
-  accent:    "bg-accent text-accent-contrast hover:bg-accent-hover",
+  primary: "bg-brand text-brand-contrast hover:bg-brand-hover",
+  accent: "bg-accent text-accent-contrast hover:bg-accent-hover",
   secondary: "bg-raised text-content border border-line hover:bg-hover",
-  ghost:     "bg-transparent text-content hover:bg-hover",
-  danger:    "bg-danger text-white hover:opacity-90",
+  ghost: "bg-transparent text-content hover:bg-hover",
+  danger: "bg-danger text-white hover:opacity-90",
 };
 
 const sizes: Record<Size, string> = {

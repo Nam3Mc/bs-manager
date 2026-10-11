@@ -90,7 +90,7 @@ export function ProductForm({
       <input type="hidden" name="recipe" value={recipeJson} />
 
       {stores.length === 0 ? (
-        <div className="rounded-lg border border-warning/40 bg-warning/5 p-4 text-sm text-warning">
+        <div className="border-warning/40 bg-warning/5 text-warning rounded-lg border p-4 text-sm">
           You need a store before creating products.{" "}
           <Link href="/admin/stores/new" className="underline">
             Create a store
@@ -127,7 +127,13 @@ export function ProductForm({
           />
         </FormField>
 
-        <FormField label="Price" htmlFor="price" required error={fe.price} hint="What the customer pays">
+        <FormField
+          label="Price"
+          htmlFor="price"
+          required
+          error={fe.price}
+          hint="What the customer pays"
+        >
           <div className="relative">
             <Input
               id="price"
@@ -144,7 +150,7 @@ export function ProductForm({
             />
             <span
               aria-hidden
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-subtle"
+              className="text-subtle pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm"
             >
               $
             </span>
@@ -161,7 +167,11 @@ export function ProductForm({
         />
       </FormField>
 
-      <FormField label="Image URL" htmlFor="imageUrl" hint="Optional — file upload coming soon">
+      <FormField
+        label="Image URL"
+        htmlFor="imageUrl"
+        hint="Optional — file upload coming soon"
+      >
         <Input
           id="imageUrl"
           name="imageUrl"
@@ -177,27 +187,27 @@ export function ProductForm({
           name="isActive"
           type="checkbox"
           defaultChecked={defaultValues?.isActive ?? true}
-          className="h-4 w-4 rounded border-line text-brand focus:ring-2 focus:ring-ring"
+          className="border-line text-brand focus:ring-ring h-4 w-4 rounded focus:ring-2"
         />
-        <label htmlFor="isActive" className="text-sm text-content">
+        <label htmlFor="isActive" className="text-content text-sm">
           Active — visible to customers
         </label>
       </div>
 
-      <div className="rounded-xl border border-line bg-surface p-4">
+      <div className="border-line bg-surface rounded-xl border p-4">
         <RecipeBuilder
           availableItems={availableItems}
           lines={recipe}
           onChange={setRecipe}
         />
         {fe.recipe && (
-          <p className="mt-2 text-xs text-danger" role="alert">
+          <p className="text-danger mt-2 text-xs" role="alert">
             {fe.recipe}
           </p>
         )}
 
         {derivedCost > 0 && priceNum > 0 && (
-          <div className="mt-3 grid grid-cols-3 gap-3 border-t border-line pt-3 text-sm">
+          <div className="border-line mt-3 grid grid-cols-3 gap-3 border-t pt-3 text-sm">
             <Stat label="Cost" value={formatCurrency(derivedCost)} />
             <Stat label="Price" value={formatCurrency(priceNum)} />
             <Stat
@@ -210,14 +220,22 @@ export function ProductForm({
       </div>
 
       {state?.error && (
-        <p role="alert" className="rounded-lg border border-danger/40 bg-danger/5 px-3 py-2 text-sm text-danger">
+        <p
+          role="alert"
+          className="border-danger/40 bg-danger/5 text-danger rounded-lg border px-3 py-2 text-sm"
+        >
           {state.error}
         </p>
       )}
 
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Link href="/admin/products">
-          <Button type="button" variant="secondary" size="md" className="w-full sm:w-auto">
+          <Button
+            type="button"
+            variant="secondary"
+            size="md"
+            className="w-full sm:w-auto"
+          >
             Cancel
           </Button>
         </Link>
@@ -228,7 +246,13 @@ export function ProductForm({
           disabled={pending || stores.length === 0}
           className="w-full sm:w-auto"
         >
-          {pending ? (isEdit ? "Saving…" : "Creating…") : isEdit ? "Save changes" : "Create product"}
+          {pending
+            ? isEdit
+              ? "Saving…"
+              : "Creating…"
+            : isEdit
+              ? "Save changes"
+              : "Create product"}
         </Button>
       </div>
     </form>
@@ -252,7 +276,7 @@ function Stat({
   };
   return (
     <div>
-      <p className="text-xs uppercase tracking-wider text-subtle">{label}</p>
+      <p className="text-subtle text-xs tracking-wider uppercase">{label}</p>
       <p className={`num mt-0.5 font-semibold ${colors[tone]}`}>{value}</p>
     </div>
   );

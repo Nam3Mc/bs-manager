@@ -32,25 +32,30 @@ export function ThemePicker({
               <div className="flex gap-1">
                 <span
                   aria-hidden
-                  className="h-6 w-6 rounded-md ring-1 ring-inset ring-black/5"
+                  className="h-6 w-6 rounded-md ring-1 ring-black/5 ring-inset"
                   style={{ backgroundColor: preset.swatch.bg }}
                 />
                 <span
                   aria-hidden
-                  className="h-6 w-6 rounded-md ring-1 ring-inset ring-black/5"
+                  className="h-6 w-6 rounded-md ring-1 ring-black/5 ring-inset"
                   style={{ backgroundColor: preset.swatch.accent }}
                 />
                 <span
                   aria-hidden
-                  className="h-6 w-6 rounded-md ring-1 ring-inset ring-black/5"
+                  className="h-6 w-6 rounded-md ring-1 ring-black/5 ring-inset"
                   style={{ backgroundColor: preset.swatch.text }}
                 />
               </div>
               <div className="min-w-0">
-                <p className={cn("text-sm font-semibold", active ? "text-brand" : "text-content")}>
+                <p
+                  className={cn(
+                    "text-sm font-semibold",
+                    active ? "text-brand" : "text-content"
+                  )}
+                >
                   {preset.label}
                 </p>
-                <p className="mt-0.5 text-xs text-muted">{preset.description}</p>
+                <p className="text-muted mt-0.5 text-xs">{preset.description}</p>
               </div>
             </button>
           );

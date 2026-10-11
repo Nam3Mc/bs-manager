@@ -20,7 +20,10 @@ export default async function NewProductPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <PageHeader title="New product" description="Define a sellable SKU and its recipe." />
+      <PageHeader
+        title="New product"
+        description="Define a sellable SKU and its recipe."
+      />
       <Card>
         <CardBody>
           <ProductForm

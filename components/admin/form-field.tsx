@@ -20,15 +20,15 @@ export function FormField({
   return (
     <div className={cn("space-y-1.5", className)}>
       <div className="flex items-center justify-between">
-        <label htmlFor={htmlFor} className="text-sm font-medium text-content">
+        <label htmlFor={htmlFor} className="text-content text-sm font-medium">
           {label}
-          {required && <span className="ml-0.5 text-danger">*</span>}
+          {required && <span className="text-danger ml-0.5">*</span>}
         </label>
-        {hint && !error && <span className="text-xs text-subtle">{hint}</span>}
+        {hint && !error && <span className="text-subtle text-xs">{hint}</span>}
       </div>
       {children}
       {error && (
-        <p className="text-xs text-danger" role="alert">
+        <p className="text-danger text-xs" role="alert">
           {error}
         </p>
       )}
