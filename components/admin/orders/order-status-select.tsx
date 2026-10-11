@@ -52,7 +52,7 @@ export function OrderStatusSelect({
         ))}
       </Select>
       {error && (
-        <p className="text-xs text-danger" role="alert">
+        <p className="text-danger text-xs" role="alert">
           {error}
         </p>
       )}

@@ -50,7 +50,7 @@ export function AddToCartButton({ productId }: { productId: string }) {
         )}
       </Button>
       {error && (
-        <p role="alert" className="text-[10px] text-danger">
+        <p role="alert" className="text-danger text-[10px]">
           {error}
         </p>
       )}

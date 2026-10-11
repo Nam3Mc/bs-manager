@@ -1,18 +1,13 @@
 "use server";
 
-import { redirect } from "next/navigation"; 
+import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { sql } from "@/lib/db";
 import { getBusinessForOwner } from "@/lib/queries";
 import { releaseStock } from "../inventory";
 
-export type OrderStatus =
-  | "PENDING"
-  | "PAID"
-  | "SHIPPED"
-  | "DELIVERED"
-  | "CANCELLED";
+export type OrderStatus = "PENDING" | "PAID" | "SHIPPED" | "DELIVERED" | "CANCELLED";
 
 const ALLOWED: readonly OrderStatus[] = [
   "PENDING",
@@ -23,37 +18,37 @@ const ALLOWED: readonly OrderStatus[] = [
 ];
 
 // export async function updateOrderStatusAction(
-  // orderId: string,
-  // nextStatus: OrderStatus
+// orderId: string,
+// nextStatus: OrderStatus
 // ): Promise<{ error?: string }> {
-  // const session = await requireRole("ADMIN");
-  // const business = await getBusinessForOwner(session.userId);
-  // if (!business) return { error: "No business associated with this account" };
-// 
-  // if (!ALLOWED.includes(nextStatus)) {
-    // return { error: "Invalid status" };
-  // }
-// 
-  // try {
-    // const result = await sql`
-      // UPDATE orders o
-      // SET status = ${nextStatus}
-      // FROM stores s
-      // WHERE o.id = ${orderId}
-        // AND o.store_id = s.id
-        // AND s.business_id = ${business.id}
-      // RETURNING o.id
-    // `;
-    // if (result.length === 0) return { error: "Order not found" };
-  // } catch (err) {
-    // console.error("[updateOrderStatusAction]", err);
-    // return { error: "Failed to update order" };
-  // }
-// 
-  // revalidatePath("/admin/orders");
-  // revalidatePath(`/admin/orders/${orderId}`);
-  // revalidatePath("/admin/dashboard");
-  // return {};
+// const session = await requireRole("ADMIN");
+// const business = await getBusinessForOwner(session.userId);
+// if (!business) return { error: "No business associated with this account" };
+//
+// if (!ALLOWED.includes(nextStatus)) {
+// return { error: "Invalid status" };
+// }
+//
+// try {
+// const result = await sql`
+// UPDATE orders o
+// SET status = ${nextStatus}
+// FROM stores s
+// WHERE o.id = ${orderId}
+// AND o.store_id = s.id
+// AND s.business_id = ${business.id}
+// RETURNING o.id
+// `;
+// if (result.length === 0) return { error: "Order not found" };
+// } catch (err) {
+// console.error("[updateOrderStatusAction]", err);
+// return { error: "Failed to update order" };
+// }
+//
+// revalidatePath("/admin/orders");
+// revalidatePath(`/admin/orders/${orderId}`);
+// revalidatePath("/admin/dashboard");
+// return {};
 // }
 
 export async function updateOrderStatusAction(
@@ -77,8 +72,7 @@ export async function updateOrderStatusAction(
       WHERE o.id = ${orderId} AND s.business_id = ${business.id}
       LIMIT 1
     `;
-    const currentStatus = (currentRows[0] as { status: OrderStatus } | undefined)
-      ?.status;
+    const currentStatus = (currentRows[0] as { status: OrderStatus } | undefined)?.status;
     if (!currentStatus) return { error: "Order not found" };
 
     // Transition INTO cancelled → put the stock back.

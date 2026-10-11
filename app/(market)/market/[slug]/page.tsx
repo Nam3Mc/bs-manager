@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  getPublicStoreBySlug,
-  getPublicProductsForStore,
-} from "@/lib/queries";
+import { getPublicStoreBySlug, getPublicProductsForStore } from "@/lib/queries";
 import { ProductCard } from "@/components/market/product-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { MapPinIcon, ArrowLeftIcon } from "@/components/market/icons";
@@ -34,10 +31,10 @@ export default async function StorePage({
     <main
       data-store-theme={store.theme_preset}
       data-store-bg={store.background_style}
-      className="min-h-[calc(100dvh-4rem)] bg-surface"
+      className="bg-surface min-h-[calc(100dvh-4rem)]"
     >
       {/* Hero */}
-      <div className="relative h-56 overflow-hidden bg-sunken sm:h-72 lg:h-80">
+      <div className="bg-sunken relative h-56 overflow-hidden sm:h-72 lg:h-80">
         {store.hero_image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -88,30 +85,22 @@ export default async function StorePage({
 
       {/* Info bar */}
       {(store.address || store.nit || store.contact_email || store.contact_phone) && (
-        <div className="border-b border-line bg-raised">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 text-xs text-muted sm:px-6 lg:px-8">
+        <div className="border-line bg-raised border-b">
+          <div className="text-muted mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 text-xs sm:px-6 lg:px-8">
             {store.address && (
               <span className="flex items-center gap-1.5">
-                <MapPinIcon className="h-3.5 w-3.5 shrink-0 text-subtle" />
+                <MapPinIcon className="text-subtle h-3.5 w-3.5 shrink-0" />
                 {store.address}
               </span>
             )}
-            {store.nit && (
-              <span className="font-mono">NIT {store.nit}</span>
-            )}
+            {store.nit && <span className="font-mono">NIT {store.nit}</span>}
             {store.contact_email && (
-              <a
-                href={`mailto:${store.contact_email}`}
-                className="hover:text-content"
-              >
+              <a href={`mailto:${store.contact_email}`} className="hover:text-content">
                 {store.contact_email}
               </a>
             )}
             {store.contact_phone && (
-              <a
-                href={`tel:${store.contact_phone}`}
-                className="hover:text-content"
-              >
+              <a href={`tel:${store.contact_phone}`} className="hover:text-content">
                 {store.contact_phone}
               </a>
             )}
@@ -122,10 +111,10 @@ export default async function StorePage({
       {/* Products */}
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-baseline justify-between">
-          <h2 className="font-display text-xl font-semibold tracking-tight text-content">
+          <h2 className="font-display text-content text-xl font-semibold tracking-tight">
             Products
           </h2>
-          <span className="num text-xs text-muted">
+          <span className="num text-muted text-xs">
             {products.length} item{products.length === 1 ? "" : "s"}
           </span>
         </div>
@@ -136,7 +125,7 @@ export default async function StorePage({
             description="This store hasn't published any products. Check back soon."
           />
         ) : (
-          <ul className="grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (
               <li key={product.id}>
                 <ProductCard product={product} />

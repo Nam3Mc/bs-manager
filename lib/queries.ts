@@ -40,7 +40,10 @@ export async function getItems(businessId: string): Promise<ItemRow[]> {
   return rows as ItemRow[];
 }
 
-export async function getItemById(itemId: string, businessId: string): Promise<ItemRow | null> {
+export async function getItemById(
+  itemId: string,
+  businessId: string
+): Promise<ItemRow | null> {
   const rows = await sql`
     SELECT id, business_id, name, unit, current_stock, unit_cost, image_url, created_at
     FROM items WHERE id = ${itemId} AND business_id = ${businessId} LIMIT 1
@@ -585,7 +588,9 @@ export type PublicProduct = {
   image_url: string | null;
 };
 
-export async function getPublicProductsForStore(storeId: string): Promise<PublicProduct[]> {
+export async function getPublicProductsForStore(
+  storeId: string
+): Promise<PublicProduct[]> {
   const rows = await sql`
     SELECT id, store_id, name, description, price, image_url
     FROM products
@@ -607,7 +612,7 @@ export async function getCartCount(userId: string): Promise<number> {
 /* ---------- cart ---------- */
 
 export type CartLine = {
-  id: string;                   // cart_items.id
+  id: string; // cart_items.id
   product_id: string;
   quantity: number;
   product_name: string;
@@ -651,9 +656,7 @@ export async function getCartSummary(userId: string): Promise<CartSummary> {
     JOIN products p ON p.id = ci.product_id
     WHERE ci.user_id = ${userId}
   `;
-  return (
-    (rows[0] as CartSummary) ?? { item_count: 0, subtotal: "0", store_count: 0 }
-  );
+  return (rows[0] as CartSummary) ?? { item_count: 0, subtotal: "0", store_count: 0 };
 }
 
 /* ---------- client orders ---------- */

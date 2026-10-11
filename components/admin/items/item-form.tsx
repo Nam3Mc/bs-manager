@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { FormField } from "@/components/admin/form-field";
-import { createItemAction, updateItemAction, type ItemFormState } from "@/lib/actions/items";
+import {
+  createItemAction,
+  updateItemAction,
+  type ItemFormState,
+} from "@/lib/actions/items";
 
 const UNITS = [
   { value: "G", label: "Grams (g)" },
@@ -33,7 +37,10 @@ export function ItemForm({
 }) {
   const isEdit = Boolean(itemId);
   const action = isEdit ? updateItemAction.bind(null, itemId!) : createItemAction;
-  const [state, formAction, pending] = useActionState<ItemFormState, FormData>(action, null);
+  const [state, formAction, pending] = useActionState<ItemFormState, FormData>(
+    action,
+    null
+  );
   const fe = state?.fieldErrors ?? {};
 
   return (
@@ -52,7 +59,12 @@ export function ItemForm({
 
       <div className="grid gap-5 sm:grid-cols-2">
         <FormField label="Unit" htmlFor="unit" required error={fe.unit}>
-          <Select id="unit" name="unit" defaultValue={defaultValues?.unit ?? "G"} invalid={!!fe.unit}>
+          <Select
+            id="unit"
+            name="unit"
+            defaultValue={defaultValues?.unit ?? "G"}
+            invalid={!!fe.unit}
+          >
             {UNITS.map((u) => (
               <option key={u.value} value={u.value}>
                 {u.label}
@@ -61,7 +73,13 @@ export function ItemForm({
           </Select>
         </FormField>
 
-        <FormField label="Unit cost" htmlFor="unitCost" hint="Cost per unit" required error={fe.unitCost}>
+        <FormField
+          label="Unit cost"
+          htmlFor="unitCost"
+          hint="Cost per unit"
+          required
+          error={fe.unitCost}
+        >
           <Input
             id="unitCost"
             name="unitCost"
@@ -77,7 +95,13 @@ export function ItemForm({
         </FormField>
       </div>
 
-      <FormField label="Current stock" htmlFor="currentStock" hint="How much you have on hand" required error={fe.currentStock}>
+      <FormField
+        label="Current stock"
+        htmlFor="currentStock"
+        hint="How much you have on hand"
+        required
+        error={fe.currentStock}
+      >
         <Input
           id="currentStock"
           name="currentStock"
@@ -92,7 +116,12 @@ export function ItemForm({
         />
       </FormField>
 
-      <FormField label="Image URL" htmlFor="imageUrl" hint="Optional — file upload coming soon" error={fe.imageUrl}>
+      <FormField
+        label="Image URL"
+        htmlFor="imageUrl"
+        hint="Optional — file upload coming soon"
+        error={fe.imageUrl}
+      >
         <Input
           id="imageUrl"
           name="imageUrl"
@@ -104,19 +133,39 @@ export function ItemForm({
       </FormField>
 
       {state?.error && (
-        <p role="alert" className="rounded-lg border border-danger/40 bg-danger/5 px-3 py-2 text-sm text-danger">
+        <p
+          role="alert"
+          className="border-danger/40 bg-danger/5 text-danger rounded-lg border px-3 py-2 text-sm"
+        >
           {state.error}
         </p>
       )}
 
       <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
         <Link href="/admin/items">
-          <Button type="button" variant="secondary" size="md" className="w-full sm:w-auto">
+          <Button
+            type="button"
+            variant="secondary"
+            size="md"
+            className="w-full sm:w-auto"
+          >
             Cancel
           </Button>
         </Link>
-        <Button type="submit" variant="primary" size="md" disabled={pending} className="w-full sm:w-auto">
-          {pending ? (isEdit ? "Saving…" : "Creating…") : isEdit ? "Save changes" : "Create item"}
+        <Button
+          type="submit"
+          variant="primary"
+          size="md"
+          disabled={pending}
+          className="w-full sm:w-auto"
+        >
+          {pending
+            ? isEdit
+              ? "Saving…"
+              : "Creating…"
+            : isEdit
+              ? "Save changes"
+              : "Create item"}
         </Button>
       </div>
     </form>

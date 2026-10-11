@@ -23,23 +23,23 @@ export function RevenueSummary(props: RevenueSummaryProps) {
   return (
     <Card>
       <CardBody className="p-0">
-        <div className="grid grid-cols-2 divide-line lg:grid-cols-4 lg:divide-x">
+        <div className="divide-line grid grid-cols-2 lg:grid-cols-4 lg:divide-x">
           {cells.map((cell, i) => (
             <div
               key={cell.label}
               className={[
                 "p-5",
-                i < 2 ? "border-b border-line lg:border-b-0" : "",
-                i % 2 === 1 ? "border-l border-line lg:border-l-0" : "",
+                i < 2 ? "border-line border-b lg:border-b-0" : "",
+                i % 2 === 1 ? "border-line border-l lg:border-l-0" : "",
               ].join(" ")}
             >
-              <p className="text-xs font-medium uppercase tracking-wider text-subtle">
+              <p className="text-subtle text-xs font-medium tracking-wider uppercase">
                 {cell.label}
               </p>
-              <p className="num mt-2 font-display text-2xl font-bold tracking-tight text-content">
+              <p className="num font-display text-content mt-2 text-2xl font-bold tracking-tight">
                 {formatCurrency(cell.revenue)}
               </p>
-              <p className="mt-1 text-xs text-muted">
+              <p className="text-muted mt-1 text-xs">
                 {formatNumber(cell.orders)} order{cell.orders === 1 ? "" : "s"}
               </p>
             </div>

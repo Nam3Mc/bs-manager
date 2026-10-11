@@ -4,10 +4,7 @@ import { requireRole } from "@/lib/session";
 import { getBusinessForOwner, getStoreById } from "@/lib/queries";
 import { PageHeader } from "@/components/admin/page-header";
 import { StoreForm } from "@/components/admin/stores/store-form";
-import {
-  isValidThemePreset,
-  isValidBackgroundStyle,
-} from "@/lib/store-themes";
+import { isValidThemePreset, isValidBackgroundStyle } from "@/lib/store-themes";
 
 export const metadata: Metadata = { title: "Edit store" };
 

@@ -38,16 +38,16 @@ export default async function CheckoutPage() {
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
         href="/market/cart"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-content"
+        className="text-muted hover:text-content mb-6 inline-flex items-center gap-1.5 text-sm transition-colors"
       >
         <ArrowLeftIcon className="h-4 w-4" />
         Back to cart
       </Link>
 
-      <h1 className="mb-2 font-display text-3xl font-bold tracking-tight text-content">
+      <h1 className="font-display text-content mb-2 text-3xl font-bold tracking-tight">
         Checkout
       </h1>
-      <p className="mb-8 text-sm text-muted">
+      <p className="text-muted mb-8 text-sm">
         Review your order, then place it. Payment is simulated in this build.
       </p>
 
@@ -65,33 +65,29 @@ export default async function CheckoutPage() {
                 <CardHeader>
                   <div className="flex items-baseline justify-between">
                     <CardTitle className="text-base">{storeName}</CardTitle>
-                    <span className="num text-xs text-muted">
+                    <span className="num text-muted text-xs">
                       {formatCurrency(storeSubtotal)}
                     </span>
                   </div>
-                  <p className="mt-0.5 text-xs text-subtle">
-                    Ships as a separate order
-                  </p>
+                  <p className="text-subtle mt-0.5 text-xs">Ships as a separate order</p>
                 </CardHeader>
                 <CardBody className="pt-3">
-                  <ul className="divide-y divide-line">
+                  <ul className="divide-line divide-y">
                     {storeLines.map((line) => (
                       <li
                         key={line.id}
-                        className="flex items-center justify-between gap-3 py-2 first:pt-0 last:pb-0 text-sm"
+                        className="flex items-center justify-between gap-3 py-2 text-sm first:pt-0 last:pb-0"
                       >
                         <div className="flex min-w-0 items-center gap-3">
-                          <span className="num text-xs text-subtle">
+                          <span className="num text-subtle text-xs">
                             {line.quantity}×
                           </span>
-                          <span className="truncate text-content">
+                          <span className="text-content truncate">
                             {line.product_name}
                           </span>
                         </div>
-                        <span className="num shrink-0 text-content">
-                          {formatCurrency(
-                            Number(line.price) * line.quantity
-                          )}
+                        <span className="num text-content shrink-0">
+                          {formatCurrency(Number(line.price) * line.quantity)}
                         </span>
                       </li>
                     ))}
@@ -111,9 +107,9 @@ export default async function CheckoutPage() {
             <CardBody className="space-y-4 pt-4">
               <CartTotals subtotal={summary.subtotal} />
               <PlaceOrderButton />
-              <p className="text-center text-xs text-subtle">
-                By placing the order you agree to pick up at the store address.
-                Payment collection is handled by the store.
+              <p className="text-subtle text-center text-xs">
+                By placing the order you agree to pick up at the store address. Payment
+                collection is handled by the store.
               </p>
             </CardBody>
           </Card>

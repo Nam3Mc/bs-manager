@@ -60,27 +60,34 @@ export function UserMenu({
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors duration-150 ease-out hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+        className="hover:bg-hover focus-visible:ring-ring focus-visible:ring-offset-surface flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors duration-150 ease-out focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <span
           aria-hidden
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-xs font-semibold text-brand-contrast"
+          className="bg-brand text-brand-contrast flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold"
         >
           {initials || "U"}
         </span>
-        <span className="hidden max-w-[120px] truncate text-content sm:block">{name}</span>
-        <ChevronDownIcon className={cn("h-4 w-4 text-subtle transition-transform duration-150", open && "rotate-180")} />
+        <span className="text-content hidden max-w-[120px] truncate sm:block">
+          {name}
+        </span>
+        <ChevronDownIcon
+          className={cn(
+            "text-subtle h-4 w-4 transition-transform duration-150",
+            open && "rotate-180"
+          )}
+        />
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-line bg-raised shadow-lg"
+          className="border-line bg-raised absolute top-full right-0 z-50 mt-2 w-64 overflow-hidden rounded-xl border shadow-lg"
         >
-          <div className="border-b border-line px-4 py-3">
-            <p className="truncate text-sm font-medium text-content">{name}</p>
-            <p className="mt-0.5 truncate text-xs text-muted">{email}</p>
-            <span className="mt-2 inline-block rounded-full bg-brand-soft px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-brand">
+          <div className="border-line border-b px-4 py-3">
+            <p className="text-content truncate text-sm font-medium">{name}</p>
+            <p className="text-muted mt-0.5 truncate text-xs">{email}</p>
+            <span className="bg-brand-soft text-brand mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase">
               {role === "ADMIN" ? "Business owner" : "Customer"}
             </span>
           </div>
@@ -90,7 +97,7 @@ export function UserMenu({
               role="menuitem"
               onClick={handleLogout}
               disabled={pending}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-content focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+              className="text-muted hover:bg-hover hover:text-content focus-visible:ring-ring flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-50"
             >
               <LogoutIcon />
               <span>{pending ? "Signing out…" : "Sign out"}</span>

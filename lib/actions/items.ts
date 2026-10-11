@@ -6,7 +6,10 @@ import { sql } from "@/lib/db";
 import { requireRole } from "@/lib/session";
 import { getBusinessForOwner } from "@/lib/queries";
 
-export type ItemFormState = { error?: string; fieldErrors?: Record<string, string> } | null;
+export type ItemFormState = {
+  error?: string;
+  fieldErrors?: Record<string, string>;
+} | null;
 
 const ALLOWED_UNITS = ["G", "KG", "ML", "L", "UNIT"] as const;
 type Unit = (typeof ALLOWED_UNITS)[number];
@@ -28,15 +31,20 @@ function parseItemForm(formData: FormData) {
   const fieldErrors: Record<string, string> = {};
   if (name.length < 2) fieldErrors.name = "Name must be at least 2 characters";
 
-  const unit: Unit = (ALLOWED_UNITS as readonly string[]).includes(unitRaw) ? (unitRaw as Unit) : "G";
+  const unit: Unit = (ALLOWED_UNITS as readonly string[]).includes(unitRaw)
+    ? (unitRaw as Unit)
+    : "G";
   const currentStock = Number(stockRaw);
-  if (!Number.isFinite(currentStock) || currentStock < 0) fieldErrors.currentStock = "Must be a non-negative number";
+  if (!Number.isFinite(currentStock) || currentStock < 0)
+    fieldErrors.currentStock = "Must be a non-negative number";
   const unitCost = Number(costRaw);
-  if (!Number.isFinite(unitCost) || unitCost < 0) fieldErrors.unitCost = "Must be a non-negative number";
+  if (!Number.isFinite(unitCost) || unitCost < 0)
+    fieldErrors.unitCost = "Must be a non-negative number";
 
   return {
     values: {
-      name, unit,
+      name,
+      unit,
       currentStock: Number.isFinite(currentStock) ? currentStock : 0,
       unitCost: Number.isFinite(unitCost) ? unitCost : 0,
       imageUrl: imageRaw || null,
@@ -51,7 +59,8 @@ export async function createItemAction(
 ): Promise<ItemFormState> {
   const businessId = await currentBusinessId();
   const { values, fieldErrors } = parseItemForm(formData);
-  if (Object.keys(fieldErrors).length > 0) return { error: "Please fix the highlighted fields", fieldErrors };
+  if (Object.keys(fieldErrors).length > 0)
+    return { error: "Please fix the highlighted fields", fieldErrors };
 
   try {
     await sql`
@@ -75,7 +84,8 @@ export async function updateItemAction(
 ): Promise<ItemFormState> {
   const businessId = await currentBusinessId();
   const { values, fieldErrors } = parseItemForm(formData);
-  if (Object.keys(fieldErrors).length > 0) return { error: "Please fix the highlighted fields", fieldErrors };
+  if (Object.keys(fieldErrors).length > 0)
+    return { error: "Please fix the highlighted fields", fieldErrors };
 
   try {
     const result = await sql`
@@ -102,7 +112,10 @@ export async function deleteItemAction(itemId: string): Promise<{ error?: string
   try {
     const used = await sql`SELECT 1 FROM product_items WHERE item_id = ${itemId} LIMIT 1`;
     if (used.length > 0) {
-      return { error: "This item is used by one or more products. Remove it from those products first." };
+      return {
+        error:
+          "This item is used by one or more products. Remove it from those products first.",
+      };
     }
     await sql`DELETE FROM items WHERE id = ${itemId} AND business_id = ${businessId}`;
   } catch (err) {

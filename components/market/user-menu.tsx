@@ -6,13 +6,7 @@ import { cn } from "@/lib/utils";
 import { ChevronDownIcon, LogoutIcon, OrderIcon } from "./icons";
 import Link from "next/link";
 
-export function MarketUserMenu({
-  name,
-  email,
-}: {
-  name: string;
-  email: string;
-}) {
+export function MarketUserMenu({ name, email }: { name: string; email: string }) {
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -59,17 +53,17 @@ export function MarketUserMenu({
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors duration-150 hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+        className="hover:bg-hover focus-visible:ring-ring focus-visible:ring-offset-surface flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <span
           aria-hidden
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-xs font-semibold text-brand-contrast"
+          className="bg-brand text-brand-contrast flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold"
         >
           {initials || "U"}
         </span>
         <ChevronDownIcon
           className={cn(
-            "hidden h-4 w-4 text-subtle transition-transform duration-150 sm:block",
+            "text-subtle hidden h-4 w-4 transition-transform duration-150 sm:block",
             open && "rotate-180"
           )}
         />
@@ -78,11 +72,11 @@ export function MarketUserMenu({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-60 overflow-hidden rounded-xl border border-line bg-raised shadow-lg"
+          className="border-line bg-raised absolute top-full right-0 z-50 mt-2 w-60 overflow-hidden rounded-xl border shadow-lg"
         >
-          <div className="border-b border-line px-4 py-3">
-            <p className="truncate text-sm font-medium text-content">{name}</p>
-            <p className="mt-0.5 truncate text-xs text-muted">{email}</p>
+          <div className="border-line border-b px-4 py-3">
+            <p className="text-content truncate text-sm font-medium">{name}</p>
+            <p className="text-muted mt-0.5 truncate text-xs">{email}</p>
           </div>
 
           <div className="p-1">
@@ -90,7 +84,7 @@ export function MarketUserMenu({
               href="/market/orders"
               onClick={() => setOpen(false)}
               role="menuitem"
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-content focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="text-muted hover:bg-hover hover:text-content focus-visible:ring-ring flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
             >
               <OrderIcon />
               <span>My orders</span>
@@ -101,7 +95,7 @@ export function MarketUserMenu({
               role="menuitem"
               onClick={handleLogout}
               disabled={pending}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-content focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+              className="text-muted hover:bg-hover hover:text-content focus-visible:ring-ring flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none disabled:opacity-50"
             >
               <LogoutIcon />
               <span>{pending ? "Signing out…" : "Sign out"}</span>

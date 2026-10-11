@@ -8,7 +8,7 @@ export function slugify(input: string): string {
   return input
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")   // strip accents
+    .replace(/[\u0300-\u036f]/g, "") // strip accents
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 60);
@@ -34,6 +34,14 @@ export function formatNumber(n: number | string): string {
 
 /** Encode a store theme for the data-* attribute. */
 export function safeThemePreset(v: string): string {
-  const allowed = ["default","bakery","butcher","produce","cafe","seafood","boutique"];
+  const allowed = [
+    "default",
+    "bakery",
+    "butcher",
+    "produce",
+    "cafe",
+    "seafood",
+    "boutique",
+  ];
   return allowed.includes(v) ? v : "default";
 }

@@ -12,9 +12,7 @@ function readTheme(): Theme {
   } catch {
     /* localStorage blocked — fall through to OS preference */
   }
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
@@ -50,11 +48,11 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       title={label}
       className={[
         "inline-flex h-9 w-9 items-center justify-center rounded-lg",
-        "border border-line bg-raised text-muted",
+        "border-line bg-raised text-muted border",
         "transition-colors duration-150 ease-out",
         "hover:bg-hover hover:text-content",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        "focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+        "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
+        "focus-visible:ring-offset-surface focus-visible:ring-offset-2",
         className,
       ].join(" ")}
     >

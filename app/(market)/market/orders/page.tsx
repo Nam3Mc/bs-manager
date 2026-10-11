@@ -37,18 +37,18 @@ export default async function OrdersPage({
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
       {placedCount > 0 && (
-        <div className="mb-6 flex items-center gap-3 rounded-xl border border-success/30 bg-success/5 p-4">
+        <div className="border-success/30 bg-success/5 mb-6 flex items-center gap-3 rounded-xl border p-4">
           <span
             aria-hidden
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-success text-white"
+            className="bg-success flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white"
           >
             <CheckIcon />
           </span>
           <div>
-            <p className="text-sm font-semibold text-content">
+            <p className="text-content text-sm font-semibold">
               Order{placedCount === 1 ? "" : "s"} placed
             </p>
-            <p className="text-xs text-muted">
+            <p className="text-muted text-xs">
               {placedCount === 1
                 ? "The store will confirm shortly."
                 : `${placedCount} orders placed. Each store will confirm separately.`}
@@ -57,10 +57,10 @@ export default async function OrdersPage({
         </div>
       )}
 
-      <h1 className="mb-2 font-display text-3xl font-bold tracking-tight text-content">
+      <h1 className="font-display text-content mb-2 text-3xl font-bold tracking-tight">
         My orders
       </h1>
-      <p className="mb-8 text-sm text-muted">
+      <p className="text-muted mb-8 text-sm">
         {orders.length === 0
           ? "You haven't placed any orders yet."
           : `${orders.length} order${orders.length === 1 ? "" : "s"} total.`}
@@ -80,32 +80,32 @@ export default async function OrdersPage({
         />
       ) : (
         <Card className="overflow-hidden">
-          <ul className="divide-y divide-line">
+          <ul className="divide-line divide-y">
             {orders.map((o) => (
               <li key={o.id}>
                 <Link
                   href={`/market/orders/${o.id}`}
-                  className="flex items-center justify-between gap-4 p-5 transition-colors duration-150 hover:bg-hover"
+                  className="hover:bg-hover flex items-center justify-between gap-4 p-5 transition-colors duration-150"
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-medium text-content">
+                      <span className="text-content font-mono text-xs font-medium">
                         #{shortId(o.id)}
                       </span>
-                      <span className="text-xs text-subtle">
+                      <span className="text-subtle text-xs">
                         {formatDate(o.created_at)}
                       </span>
                     </div>
-                    <p className="mt-1 truncate text-sm font-medium text-content">
+                    <p className="text-content mt-1 truncate text-sm font-medium">
                       {o.store_name}
                     </p>
-                    <p className="text-xs text-muted">
+                    <p className="text-muted text-xs">
                       {o.line_count} item{o.line_count === 1 ? "" : "s"}
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-col items-end gap-2">
                     <OrderStatusBadge status={o.status} />
-                    <span className="num text-sm font-semibold text-content">
+                    <span className="num text-content text-sm font-semibold">
                       {formatCurrency(o.total)}
                     </span>
                   </div>

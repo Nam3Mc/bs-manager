@@ -15,10 +15,10 @@ export default async function MarketPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-content sm:text-4xl">
+        <h1 className="font-display text-content text-3xl font-bold tracking-tight sm:text-4xl">
           Hi {firstName}, what&apos;s for today?
         </h1>
-        <p className="mt-2 text-muted">
+        <p className="text-muted mt-2">
           {stores.length === 0
             ? "No stores are open yet."
             : `${stores.length} store${stores.length === 1 ? "" : "s"} open near you.`}

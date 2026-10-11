@@ -26,8 +26,8 @@ export function PriceDisplay({
   was,
 }: PriceDisplayProps) {
   const value = typeof amount === "string" ? Number(amount) : amount;
-  const wasValue = was === undefined ? undefined
-    : typeof was === "string" ? Number(was) : was;
+  const wasValue =
+    was === undefined ? undefined : typeof was === "string" ? Number(was) : was;
 
   const fmt = new Intl.NumberFormat(locale, {
     style: "currency",
@@ -38,7 +38,7 @@ export function PriceDisplay({
   return (
     <span className={cn("num inline-flex flex-col leading-tight", className)}>
       {wasValue !== undefined && wasValue > value && (
-        <span className="text-xs text-subtle line-through">{fmt.format(wasValue)}</span>
+        <span className="text-subtle text-xs line-through">{fmt.format(wasValue)}</span>
       )}
       <span className={cn(sizes[size], "text-content")}>{fmt.format(value)}</span>
     </span>

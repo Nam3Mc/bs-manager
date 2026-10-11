@@ -13,15 +13,15 @@ const UNIT_LABEL: Record<string, string> = {
 export function LowStock({ items }: { items: LowStockItem[] }) {
   if (items.length === 0) {
     return (
-      <div className="flex items-center gap-2 py-6 text-sm text-success">
-        <span aria-hidden className="h-2 w-2 rounded-full bg-success" />
+      <div className="text-success flex items-center gap-2 py-6 text-sm">
+        <span aria-hidden className="bg-success h-2 w-2 rounded-full" />
         All items are well stocked.
       </div>
     );
   }
 
   return (
-    <ul className="divide-y divide-line">
+    <ul className="divide-line divide-y">
       {items.map((item) => {
         const stock = Number(item.current_stock);
         const critical = stock <= 0;
@@ -37,7 +37,7 @@ export function LowStock({ items }: { items: LowStockItem[] }) {
               />
               <Link
                 href={`/admin/items/${item.id}/edit`}
-                className="truncate text-sm font-medium text-content hover:text-brand"
+                className="text-content hover:text-brand truncate text-sm font-medium"
               >
                 {item.name}
               </Link>

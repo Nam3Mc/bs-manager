@@ -20,9 +20,7 @@ export type SessionPayload = {
 function getSecret(): Uint8Array {
   const secret = process.env.AUTH_SECRET;
   if (!secret) {
-    throw new Error(
-      "AUTH_SECRET is not set. Add it to .env.local and Vercel env vars."
-    );
+    throw new Error("AUTH_SECRET is not set. Add it to .env.local and Vercel env vars.");
   }
   return new TextEncoder().encode(secret);
 }

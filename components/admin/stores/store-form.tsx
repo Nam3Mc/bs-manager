@@ -62,10 +62,12 @@ export function StoreForm({ storeId, defaultValues }: StoreFormProps) {
     <form action={formAction} className="grid gap-6 lg:grid-cols-[1fr_360px]" noValidate>
       <div className="space-y-6">
         {/* ---- Basic info ---- */}
-        <section className="space-y-5 rounded-xl border border-line bg-raised p-5 shadow-sm">
+        <section className="border-line bg-raised space-y-5 rounded-xl border p-5 shadow-sm">
           <header>
-            <h2 className="font-display text-lg font-semibold text-content">Basic info</h2>
-            <p className="mt-0.5 text-xs text-muted">
+            <h2 className="font-display text-content text-lg font-semibold">
+              Basic info
+            </h2>
+            <p className="text-muted mt-0.5 text-xs">
               Name and contact details customers will see.
             </p>
           </header>
@@ -90,7 +92,7 @@ export function StoreForm({ storeId, defaultValues }: StoreFormProps) {
             error={fe.slug}
           >
             <div className="flex items-center gap-2">
-              <span className="text-xs text-subtle">/market/</span>
+              <span className="text-subtle text-xs">/market/</span>
               <Input
                 id="slug"
                 name="slug"
@@ -165,19 +167,19 @@ export function StoreForm({ storeId, defaultValues }: StoreFormProps) {
               name="isActive"
               type="checkbox"
               defaultChecked={defaultValues?.isActive ?? true}
-              className="h-4 w-4 rounded border-line text-brand focus:ring-2 focus:ring-ring"
+              className="border-line text-brand focus:ring-ring h-4 w-4 rounded focus:ring-2"
             />
-            <label htmlFor="isActive" className="text-sm text-content">
+            <label htmlFor="isActive" className="text-content text-sm">
               Active — visible in the marketplace
             </label>
           </div>
         </section>
 
         {/* ---- Hero ---- */}
-        <section className="space-y-5 rounded-xl border border-line bg-raised p-5 shadow-sm">
+        <section className="border-line bg-raised space-y-5 rounded-xl border p-5 shadow-sm">
           <header>
-            <h2 className="font-display text-lg font-semibold text-content">Hero</h2>
-            <p className="mt-0.5 text-xs text-muted">
+            <h2 className="font-display text-content text-lg font-semibold">Hero</h2>
+            <p className="text-muted mt-0.5 text-xs">
               The big banner at the top of your store page.
             </p>
           </header>
@@ -225,10 +227,10 @@ export function StoreForm({ storeId, defaultValues }: StoreFormProps) {
         </section>
 
         {/* ---- Theme ---- */}
-        <section className="space-y-5 rounded-xl border border-line bg-raised p-5 shadow-sm">
+        <section className="border-line bg-raised space-y-5 rounded-xl border p-5 shadow-sm">
           <header>
-            <h2 className="font-display text-lg font-semibold text-content">Theme</h2>
-            <p className="mt-0.5 text-xs text-muted">
+            <h2 className="font-display text-content text-lg font-semibold">Theme</h2>
+            <p className="text-muted mt-0.5 text-xs">
               The accent color of your storefront. Text and backgrounds stay consistent
               for readability.
             </p>
@@ -246,7 +248,7 @@ export function StoreForm({ storeId, defaultValues }: StoreFormProps) {
         {state?.error && (
           <p
             role="alert"
-            className="rounded-lg border border-danger/40 bg-danger/5 px-3 py-2 text-sm text-danger"
+            className="border-danger/40 bg-danger/5 text-danger rounded-lg border px-3 py-2 text-sm"
           >
             {state.error}
           </p>
@@ -283,7 +285,7 @@ export function StoreForm({ storeId, defaultValues }: StoreFormProps) {
 
       {/* ---- Live preview ---- */}
       <aside className="lg:sticky lg:top-20 lg:self-start">
-        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-subtle">
+        <p className="text-subtle mb-2 text-xs font-medium tracking-wider uppercase">
           Live preview
         </p>
         <StorePreview

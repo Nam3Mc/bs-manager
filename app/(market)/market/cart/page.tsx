@@ -21,7 +21,7 @@ export default async function CartPage() {
   if (lines.length === 0) {
     return (
       <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 className="mb-6 font-display text-3xl font-bold tracking-tight text-content">
+        <h1 className="font-display text-content mb-6 text-3xl font-bold tracking-tight">
           Your cart
         </h1>
         <EmptyState
@@ -51,16 +51,16 @@ export default async function CartPage() {
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
         href="/market"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-content"
+        className="text-muted hover:text-content mb-6 inline-flex items-center gap-1.5 text-sm transition-colors"
       >
         <ArrowLeftIcon className="h-4 w-4" />
         Continue shopping
       </Link>
 
-      <h1 className="mb-2 font-display text-3xl font-bold tracking-tight text-content">
+      <h1 className="font-display text-content mb-2 text-3xl font-bold tracking-tight">
         Your cart
       </h1>
-      <p className="mb-8 text-sm text-muted">
+      <p className="text-muted mb-8 text-sm">
         {summary.item_count} item{summary.item_count === 1 ? "" : "s"} from{" "}
         {summary.store_count} store{summary.store_count === 1 ? "" : "s"}
       </p>
@@ -77,20 +77,20 @@ export default async function CartPage() {
                   <div className="flex items-center justify-between">
                     <Link
                       href={`/market/${storeSlug}`}
-                      className="font-display text-base font-semibold text-content hover:text-brand"
+                      className="font-display text-content hover:text-brand text-base font-semibold"
                     >
                       {storeName}
                     </Link>
                     <Link
                       href={`/market/${storeSlug}`}
-                      className="text-xs font-medium text-brand hover:text-brand-hover"
+                      className="text-brand hover:text-brand-hover text-xs font-medium"
                     >
                       Visit store
                     </Link>
                   </div>
                 </CardHeader>
                 <CardBody className="pt-2">
-                  <ul className="divide-y divide-line">
+                  <ul className="divide-line divide-y">
                     {storeLines.map((line) => (
                       <CartLine key={line.id} line={line} />
                     ))}
@@ -114,7 +114,7 @@ export default async function CartPage() {
                   Proceed to checkout
                 </Button>
               </Link>
-              <p className="text-center text-xs text-subtle">
+              <p className="text-subtle text-center text-xs">
                 Tax and totals recalculated at checkout.
               </p>
             </CardBody>

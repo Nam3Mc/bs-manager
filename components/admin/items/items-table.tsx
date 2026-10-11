@@ -42,7 +42,7 @@ export function ItemsTable({ items }: { items: ItemRow[] }) {
       <div className="hidden md:block">
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-line bg-sunken text-left text-xs font-medium uppercase tracking-wider text-subtle">
+            <tr className="border-line bg-sunken text-subtle border-b text-left text-xs font-medium tracking-wider uppercase">
               <th className="px-5 py-3">Name</th>
               <th className="px-5 py-3">Stock</th>
               <th className="px-5 py-3 text-right">Unit cost</th>
@@ -58,27 +58,40 @@ export function ItemsTable({ items }: { items: ItemRow[] }) {
               const cost = Number(item.unit_cost);
               const tone = stockTone(stock);
               return (
-                <tr key={item.id} className="border-b border-line last:border-0 hover:bg-hover">
+                <tr
+                  key={item.id}
+                  className="border-line hover:bg-hover border-b last:border-0"
+                >
                   <td className="px-5 py-3">
-                    <Link href={`/admin/items/${item.id}/edit`} className="font-medium text-content hover:text-brand">
+                    <Link
+                      href={`/admin/items/${item.id}/edit`}
+                      className="text-content hover:text-brand font-medium"
+                    >
                       {item.name}
                     </Link>
                   </td>
                   <td className="px-5 py-3">
                     <span className="inline-flex items-center gap-2">
-                      <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${tone.dot}`} />
+                      <span
+                        aria-hidden
+                        className={`h-2 w-2 shrink-0 rounded-full ${tone.dot}`}
+                      />
                       <span className={`num ${tone.text}`}>
                         {stock} {UNIT_LABEL[item.unit]}
                       </span>
                     </span>
                   </td>
-                  <td className="num px-5 py-3 text-right text-muted">{formatCurrency(cost)}</td>
-                  <td className="num px-5 py-3 text-right font-medium text-content">{formatCurrency(stock * cost)}</td>
+                  <td className="num text-muted px-5 py-3 text-right">
+                    {formatCurrency(cost)}
+                  </td>
+                  <td className="num text-content px-5 py-3 text-right font-medium">
+                    {formatCurrency(stock * cost)}
+                  </td>
                   <td className="px-5 py-3">
                     <div className="flex items-center justify-end gap-1">
                       <Link
                         href={`/admin/items/${item.id}/edit`}
-                        className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-hover hover:text-content"
+                        className="text-muted hover:bg-hover hover:text-content rounded-lg px-3 py-1.5 text-xs font-medium transition-colors duration-150"
                       >
                         Edit
                       </Link>
@@ -92,7 +105,7 @@ export function ItemsTable({ items }: { items: ItemRow[] }) {
         </table>
       </div>
 
-      <ul className="divide-y divide-line md:hidden">
+      <ul className="divide-line divide-y md:hidden">
         {items.map((item) => {
           const stock = Number(item.current_stock);
           const cost = Number(item.unit_cost);
@@ -101,11 +114,17 @@ export function ItemsTable({ items }: { items: ItemRow[] }) {
             <li key={item.id} className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <Link href={`/admin/items/${item.id}/edit`} className="truncate font-medium text-content">
+                  <Link
+                    href={`/admin/items/${item.id}/edit`}
+                    className="text-content truncate font-medium"
+                  >
                     {item.name}
                   </Link>
-                  <div className="mt-1 flex items-center gap-2 text-xs text-muted">
-                    <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${tone.dot}`} />
+                  <div className="text-muted mt-1 flex items-center gap-2 text-xs">
+                    <span
+                      aria-hidden
+                      className={`h-2 w-2 shrink-0 rounded-full ${tone.dot}`}
+                    />
                     <span className={`num ${tone.text}`}>
                       {stock} {UNIT_LABEL[item.unit]}
                     </span>

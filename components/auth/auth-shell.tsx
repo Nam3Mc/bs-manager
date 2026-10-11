@@ -11,14 +11,14 @@ interface AuthShellProps {
 
 export function AuthShell({ title, subtitle, children, footer }: AuthShellProps) {
   return (
-    <div className="grid min-h-dvh bg-surface lg:grid-cols-2">
+    <div className="bg-surface grid min-h-dvh lg:grid-cols-2">
       {/* ---------- LEFT: form ---------- */}
       <div className="flex flex-col">
         <header className="flex items-center justify-between p-6">
           <Link href="/" className="flex items-center gap-2">
             <span
               aria-hidden
-              className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-brand-contrast"
+              className="bg-brand text-brand-contrast flex h-8 w-8 items-center justify-center rounded-lg"
             >
               <svg
                 width="16"
@@ -33,7 +33,7 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
                 <path d="M3 7h18M3 12h18M3 17h12" />
               </svg>
             </span>
-            <span className="font-display text-lg font-semibold tracking-tight text-content">
+            <span className="font-display text-content text-lg font-semibold tracking-tight">
               BS-Manager
             </span>
           </Link>
@@ -42,21 +42,21 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
 
         <main className="flex flex-1 items-center justify-center px-6 pb-10">
           <div className="w-full max-w-md">
-            <h1 className="font-display text-3xl font-bold tracking-tight text-content">
+            <h1 className="font-display text-content text-3xl font-bold tracking-tight">
               {title}
             </h1>
-            <p className="mt-2 text-sm text-muted">{subtitle}</p>
+            <p className="text-muted mt-2 text-sm">{subtitle}</p>
 
             <div className="mt-8">{children}</div>
 
-            <p className="mt-6 text-sm text-muted">{footer}</p>
+            <p className="text-muted mt-6 text-sm">{footer}</p>
           </div>
         </main>
       </div>
 
       {/* ---------- RIGHT: brand panel ---------- */}
       <aside
-        className="relative hidden overflow-hidden border-l border-line lg:block"
+        className="border-line relative hidden overflow-hidden border-l lg:block"
         style={{
           background:
             "linear-gradient(135deg, color-mix(in oklab, var(--brand) 18%, transparent), color-mix(in oklab, var(--brand) 4%, transparent) 60%, transparent)",
@@ -66,16 +66,16 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
           <div />
 
           <div className="max-w-md">
-            <p className="font-display text-3xl font-semibold leading-tight text-content">
+            <p className="font-display text-content text-3xl leading-tight font-semibold">
               From raw ingredients to a live storefront — in one place.
             </p>
-            <p className="mt-4 text-sm text-muted">
-              Track stock, build products, and give your customers a
-              storefront that feels like yours.
+            <p className="text-muted mt-4 text-sm">
+              Track stock, build products, and give your customers a storefront that feels
+              like yours.
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 text-xs text-muted">
+          <div className="text-muted grid grid-cols-3 gap-6 text-xs">
             <Stat label="Items" value="∞" />
             <Stat label="Products" value="∞" />
             <Stat label="Stores" value="∞" />
@@ -89,10 +89,8 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <div className="num font-display text-2xl font-bold text-content">
-        {value}
-      </div>
-      <div className="mt-1 uppercase tracking-wider">{label}</div>
+      <div className="num font-display text-content text-2xl font-bold">{value}</div>
+      <div className="mt-1 tracking-wider uppercase">{label}</div>
     </div>
   );
 }

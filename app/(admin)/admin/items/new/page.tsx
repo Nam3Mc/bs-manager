@@ -10,7 +10,10 @@ export default async function NewItemPage() {
   await requireRole("ADMIN");
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="New item" description="Add a raw ingredient to your business inventory." />
+      <PageHeader
+        title="New item"
+        description="Add a raw ingredient to your business inventory."
+      />
       <Card>
         <CardBody>
           <ItemForm />

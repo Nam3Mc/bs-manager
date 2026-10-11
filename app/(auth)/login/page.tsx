@@ -19,7 +19,10 @@ export default async function LoginPage({
       footer={
         <>
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-medium text-brand hover:text-brand-hover">
+          <Link
+            href="/register"
+            className="text-brand hover:text-brand-hover font-medium"
+          >
             Create one
           </Link>
         </>

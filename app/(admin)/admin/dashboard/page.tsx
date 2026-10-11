@@ -86,7 +86,7 @@ export default async function AdminDashboardPage() {
               <CardTitle>Recent items</CardTitle>
               <Link
                 href="/admin/items"
-                className="text-xs font-medium text-brand hover:text-brand-hover"
+                className="text-brand hover:text-brand-hover text-xs font-medium"
               >
                 View all
               </Link>
@@ -107,7 +107,7 @@ export default async function AdminDashboardPage() {
                 className="border-none bg-transparent p-6"
               />
             ) : (
-              <ul className="divide-y divide-line">
+              <ul className="divide-line divide-y">
                 {recentItems.map((item) => (
                   <li
                     key={item.id}
@@ -116,17 +116,17 @@ export default async function AdminDashboardPage() {
                     <div className="min-w-0">
                       <Link
                         href={`/admin/items/${item.id}/edit`}
-                        className="truncate text-sm font-medium text-content hover:text-brand"
+                        className="text-content hover:text-brand truncate text-sm font-medium"
                       >
                         {item.name}
                       </Link>
-                      <p className="text-xs text-muted">
+                      <p className="text-muted text-xs">
                         {item.current_stock} {item.unit.toLowerCase()}
                       </p>
                     </div>
-                    <div className="num text-sm text-muted">
+                    <div className="num text-muted text-sm">
                       {formatCurrency(item.unit_cost)}
-                      <span className="ml-1 text-xs text-subtle">
+                      <span className="text-subtle ml-1 text-xs">
                         / {item.unit.toLowerCase()}
                       </span>
                     </div>
@@ -162,20 +162,20 @@ function FirstRunView({ name }: { name: string }) {
 
   return (
     <div className="mx-auto max-w-lg py-10">
-      <div className="rounded-2xl border border-line bg-raised p-8 shadow-sm">
+      <div className="border-line bg-raised rounded-2xl border p-8 shadow-sm">
         <span
           aria-hidden
-          className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-soft text-brand"
+          className="bg-brand-soft text-brand flex h-12 w-12 items-center justify-center rounded-xl"
         >
           <StoreIcon className="h-6 w-6" />
         </span>
 
-        <h1 className="mt-5 font-display text-2xl font-bold tracking-tight text-content">
+        <h1 className="font-display text-content mt-5 text-2xl font-bold tracking-tight">
           Welcome, {firstName}
         </h1>
-        <p className="mt-2 text-sm text-muted">
-          Set up your business to start adding items, building products, and
-          publishing your storefront.
+        <p className="text-muted mt-2 text-sm">
+          Set up your business to start adding items, building products, and publishing
+          your storefront.
         </p>
 
         <div className="mt-6">
@@ -192,7 +192,7 @@ function QuickAction({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="flex items-center justify-between rounded-lg border border-line bg-surface px-3 py-2.5 text-sm text-content transition-colors duration-150 ease-out hover:bg-hover"
+      className="border-line bg-surface text-content hover:bg-hover flex items-center justify-between rounded-lg border px-3 py-2.5 text-sm transition-colors duration-150 ease-out"
     >
       <span>{label}</span>
       <span aria-hidden className="text-subtle">
