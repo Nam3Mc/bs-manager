@@ -5,6 +5,7 @@ import { requireRole } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { sql } from "@/lib/db";
 import { getBusinessForOwner } from "@/lib/queries";
+import { releaseStock } from "../inventory";
 
 export type OrderStatus =
   | "PENDING"
@@ -21,6 +22,40 @@ const ALLOWED: readonly OrderStatus[] = [
   "CANCELLED",
 ];
 
+// export async function updateOrderStatusAction(
+  // orderId: string,
+  // nextStatus: OrderStatus
+// ): Promise<{ error?: string }> {
+  // const session = await requireRole("ADMIN");
+  // const business = await getBusinessForOwner(session.userId);
+  // if (!business) return { error: "No business associated with this account" };
+// 
+  // if (!ALLOWED.includes(nextStatus)) {
+    // return { error: "Invalid status" };
+  // }
+// 
+  // try {
+    // const result = await sql`
+      // UPDATE orders o
+      // SET status = ${nextStatus}
+      // FROM stores s
+      // WHERE o.id = ${orderId}
+        // AND o.store_id = s.id
+        // AND s.business_id = ${business.id}
+      // RETURNING o.id
+    // `;
+    // if (result.length === 0) return { error: "Order not found" };
+  // } catch (err) {
+    // console.error("[updateOrderStatusAction]", err);
+    // return { error: "Failed to update order" };
+  // }
+// 
+  // revalidatePath("/admin/orders");
+  // revalidatePath(`/admin/orders/${orderId}`);
+  // revalidatePath("/admin/dashboard");
+  // return {};
+// }
+
 export async function updateOrderStatusAction(
   orderId: string,
   nextStatus: OrderStatus
@@ -34,16 +69,40 @@ export async function updateOrderStatusAction(
   }
 
   try {
-    const result = await sql`
+    // Read the current status (and verify ownership) before changing.
+    const currentRows = await sql`
+      SELECT o.status
+      FROM orders o
+      JOIN stores s ON s.id = o.store_id
+      WHERE o.id = ${orderId} AND s.business_id = ${business.id}
+      LIMIT 1
+    `;
+    const currentStatus = (currentRows[0] as { status: OrderStatus } | undefined)
+      ?.status;
+    if (!currentStatus) return { error: "Order not found" };
+
+    // Transition INTO cancelled → put the stock back.
+    if (nextStatus === "CANCELLED" && currentStatus !== "CANCELLED") {
+      const lines = (await sql`
+        SELECT product_id, quantity FROM order_lines WHERE order_id = ${orderId}
+      `) as { product_id: string; quantity: number }[];
+
+      await releaseStock(
+        lines.map((l) => ({
+          productId: l.product_id,
+          quantity: Number(l.quantity),
+        }))
+      );
+    }
+
+    await sql`
       UPDATE orders o
       SET status = ${nextStatus}
       FROM stores s
       WHERE o.id = ${orderId}
         AND o.store_id = s.id
         AND s.business_id = ${business.id}
-      RETURNING o.id
     `;
-    if (result.length === 0) return { error: "Order not found" };
   } catch (err) {
     console.error("[updateOrderStatusAction]", err);
     return { error: "Failed to update order" };
@@ -52,6 +111,8 @@ export async function updateOrderStatusAction(
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/items");
+  revalidatePath("/market/orders");
   return {};
 }
 
