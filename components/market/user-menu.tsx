@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { ChevronDownIcon, LogoutIcon } from "./icons";
+import { ChevronDownIcon, LogoutIcon, OrderIcon } from "./icons";
+import Link from "next/link";
 
 export function MarketUserMenu({
   name,
@@ -83,7 +84,18 @@ export function MarketUserMenu({
             <p className="truncate text-sm font-medium text-content">{name}</p>
             <p className="mt-0.5 truncate text-xs text-muted">{email}</p>
           </div>
+
           <div className="p-1">
+            <Link
+              href="/market/orders"
+              onClick={() => setOpen(false)}
+              role="menuitem"
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-content focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <OrderIcon />
+              <span>My orders</span>
+            </Link>
+
             <button
               type="button"
               role="menuitem"
