@@ -14,16 +14,38 @@ interface MarketShellProps {
   children: React.ReactNode;
 }
 
+/** Paths under /market that are NOT store slugs. */
+const RESERVED_MARKET_PATHS = [
+  "/market/orders",
+  "/market/cart",
+  "/market/checkout",
+];
+
+function isMarketplaceActive(pathname: string): boolean {
+  if (pathname === "/market") return true;
+  if (!pathname.startsWith("/market/")) return false;
+  return !RESERVED_MARKET_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
+}
+
+function isOrdersActive(pathname: string): boolean {
+  return pathname === "/market/orders" || pathname.startsWith("/market/orders/");
+}
+
 export function MarketShell({ session, cartCount, children }: MarketShellProps) {
   const pathname = usePathname();
-  const isStorePage = pathname !== "/market";
+
+  const marketplaceActive = isMarketplaceActive(pathname);
+  const ordersActive = isOrdersActive(pathname);
 
   return (
     <div className="flex min-h-dvh flex-col bg-surface">
       <header className="sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur">
-        <nav className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+        <nav className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link href="/market" className="flex items-center gap-2">
+          <Link
+            href="/market"
+            className="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          >
             <span
               aria-hidden
               className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-brand-contrast"
@@ -32,55 +54,56 @@ export function MarketShell({ session, cartCount, children }: MarketShellProps) 
                 <path d="M3 7h18M3 12h18M3 17h12" />
               </svg>
             </span>
-            <span className="font-display text-base font-semibold tracking-tight text-content">
+            <span className="hidden font-display text-base font-semibold tracking-tight text-content md:inline">
               BS-Manager
             </span>
           </Link>
 
-          {/* Breadcrumb slot — shows "Marketplace" when on a store page */}
-          <div className="hidden items-center gap-2 text-sm sm:flex">
-            <Link
-              href="/market"
-              className={cn(
-                "rounded-md px-2 py-1 transition-colors duration-150",
-                isStorePage
-                  ? "text-muted hover:bg-hover hover:text-content"
-                  : "font-medium text-content"
-              )}
-            >
-              Marketplace
-            </Link>
-          </div>
+          {/* Primary nav */}
+          <ul className="flex items-center gap-0.5 sm:gap-1">
+            <li>
+              <NavLink href="/market" active={marketplaceActive}>
+                Marketplace
+              </NavLink>
+            </li>
+            <li>
+              <NavLink href="/market/orders" active={ordersActive}>
+                My orders
+              </NavLink>
+            </li>
+          </ul>
 
           <div className="flex-1" />
 
           {/* Right cluster */}
-          <ThemeToggle />
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+            <ThemeToggle />
 
-          <Link
-            href="/market/cart"
-            aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
-            className={cn(
-              "relative flex h-9 w-9 items-center justify-center rounded-lg",
-              "border border-line bg-raised text-muted",
-              "transition-colors duration-150 ease-out",
-              "hover:bg-hover hover:text-content",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              "focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-            )}
-          >
-            <CartIcon />
-            {cartCount > 0 && (
-              <span
-                aria-hidden
-                className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold text-accent-contrast"
-              >
-                {cartCount > 99 ? "99+" : cartCount}
-              </span>
-            )}
-          </Link>
+            <Link
+              href="/market/cart"
+              aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
+              className={cn(
+                "relative flex h-9 w-9 items-center justify-center rounded-lg",
+                "border border-line bg-raised text-muted",
+                "transition-colors duration-150 ease-out",
+                "hover:bg-hover hover:text-content",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+              )}
+            >
+              <CartIcon />
+              {cartCount > 0 && (
+                <span
+                  aria-hidden
+                  className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold text-accent-contrast"
+                >
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
+            </Link>
 
-          <MarketUserMenu name={session.name} email={session.email} />
+            <MarketUserMenu name={session.name} email={session.email} />
+          </div>
         </nav>
       </header>
 
@@ -93,5 +116,33 @@ export function MarketShell({ session, cartCount, children }: MarketShellProps) 
         </div>
       </footer>
     </div>
+  );
+}
+
+function NavLink({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "inline-flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium",
+        "transition-colors duration-150 ease-out",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+        active
+          ? "bg-brand-soft text-brand"
+          : "text-muted hover:bg-hover hover:text-content"
+      )}
+    >
+      {children}
+    </Link>
   );
 }
