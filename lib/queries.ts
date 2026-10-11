@@ -528,3 +528,189 @@ export async function getStoreById(
   `;
   return (rows[0] as StoreRow) ?? null;
 }
+
+/* ---------- market (public reads) ---------- */
+
+export type PublicStore = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  address: string | null;
+  nit: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  theme_preset: string;
+  background_style: string;
+  hero_image_url: string | null;
+  hero_headline: string | null;
+  hero_subtext: string | null;
+  product_count: number;
+};
+
+export async function getPublicStores(): Promise<PublicStore[]> {
+  const rows = await sql`
+    SELECT
+      s.id, s.slug, s.name, s.description, s.address, s.nit,
+      s.contact_email, s.contact_phone, s.theme_preset, s.background_style,
+      s.hero_image_url, s.hero_headline, s.hero_subtext,
+      (SELECT COUNT(*)::int FROM products p WHERE p.store_id = s.id AND p.is_active = true) AS product_count
+    FROM stores s
+    WHERE s.is_active = true
+    ORDER BY s.name ASC
+  `;
+  return rows as PublicStore[];
+}
+
+export async function getPublicStoreBySlug(slug: string): Promise<PublicStore | null> {
+  const rows = await sql`
+    SELECT
+      s.id, s.slug, s.name, s.description, s.address, s.nit,
+      s.contact_email, s.contact_phone, s.theme_preset, s.background_style,
+      s.hero_image_url, s.hero_headline, s.hero_subtext,
+      (SELECT COUNT(*)::int FROM products p WHERE p.store_id = s.id AND p.is_active = true) AS product_count
+    FROM stores s
+    WHERE s.slug = ${slug} AND s.is_active = true
+    LIMIT 1
+  `;
+  return (rows[0] as PublicStore) ?? null;
+}
+
+export type PublicProduct = {
+  id: string;
+  store_id: string;
+  name: string;
+  description: string | null;
+  price: string;
+  image_url: string | null;
+};
+
+export async function getPublicProductsForStore(storeId: string): Promise<PublicProduct[]> {
+  const rows = await sql`
+    SELECT id, store_id, name, description, price, image_url
+    FROM products
+    WHERE store_id = ${storeId} AND is_active = true
+    ORDER BY name ASC
+  `;
+  return rows as PublicProduct[];
+}
+
+export async function getCartCount(userId: string): Promise<number> {
+  const rows = await sql`
+    SELECT COALESCE(SUM(quantity), 0)::int AS count
+    FROM cart_items
+    WHERE user_id = ${userId}
+  `;
+  return (rows[0] as { count: number } | undefined)?.count ?? 0;
+}
+
+/* ---------- cart ---------- */
+
+export type CartLine = {
+  id: string;                   // cart_items.id
+  product_id: string;
+  quantity: number;
+  product_name: string;
+  product_image_url: string | null;
+  price: string;
+  store_id: string;
+  store_name: string;
+  store_slug: string;
+  theme_preset: string;
+};
+
+export async function getCartLines(userId: string): Promise<CartLine[]> {
+  const rows = await sql`
+    SELECT
+      ci.id, ci.product_id, ci.quantity,
+      p.name AS product_name, p.image_url AS product_image_url, p.price,
+      s.id AS store_id, s.name AS store_name, s.slug AS store_slug,
+      s.theme_preset
+    FROM cart_items ci
+    JOIN products p ON p.id = ci.product_id
+    JOIN stores s ON s.id = p.store_id
+    WHERE ci.user_id = ${userId}
+    ORDER BY s.name ASC, p.name ASC
+  `;
+  return rows as CartLine[];
+}
+
+export type CartSummary = {
+  item_count: number;
+  subtotal: string;
+  store_count: number;
+};
+
+export async function getCartSummary(userId: string): Promise<CartSummary> {
+  const rows = await sql`
+    SELECT
+      COALESCE(SUM(ci.quantity), 0)::int AS item_count,
+      COALESCE(SUM(ci.quantity * p.price), 0)::numeric AS subtotal,
+      COUNT(DISTINCT p.store_id)::int AS store_count
+    FROM cart_items ci
+    JOIN products p ON p.id = ci.product_id
+    WHERE ci.user_id = ${userId}
+  `;
+  return (
+    (rows[0] as CartSummary) ?? { item_count: 0, subtotal: "0", store_count: 0 }
+  );
+}
+
+/* ---------- client orders ---------- */
+
+export type ClientOrderRow = {
+  id: string;
+  store_id: string;
+  store_name: string;
+  store_slug: string;
+  theme_preset: string;
+  status: OrderStatus;
+  total: string;
+  created_at: string;
+  line_count: number;
+};
+
+export async function getClientOrders(userId: string): Promise<ClientOrderRow[]> {
+  const rows = await sql`
+    SELECT
+      o.id, o.store_id, o.status, o.total, o.created_at,
+      s.name AS store_name, s.slug AS store_slug, s.theme_preset,
+      (SELECT COUNT(*)::int FROM order_lines ol WHERE ol.order_id = o.id) AS line_count
+    FROM orders o
+    JOIN stores s ON s.id = o.store_id
+    WHERE o.user_id = ${userId}
+    ORDER BY o.created_at DESC
+  `;
+  return rows as ClientOrderRow[];
+}
+
+export async function getClientOrderById(
+  orderId: string,
+  userId: string
+): Promise<OrderWithLines | null> {
+  const rows = await sql`
+    SELECT o.id, o.user_id, o.store_id, o.status,
+           o.subtotal, o.tax, o.total, o.created_at, o.updated_at,
+           u.name AS customer_name, u.email AS customer_email,
+           s.name AS store_name,
+           0 AS line_count
+    FROM orders o
+    JOIN stores s ON s.id = o.store_id
+    JOIN users u ON u.id = o.user_id
+    WHERE o.id = ${orderId} AND o.user_id = ${userId}
+    LIMIT 1
+  `;
+  const order = rows[0] as OrderRow | undefined;
+  if (!order) return null;
+
+  const lines = await sql`
+    SELECT ol.id, ol.product_id, p.name AS product_name, p.image_url AS product_image_url,
+           ol.quantity, ol.unit_price, ol.line_total
+    FROM order_lines ol
+    JOIN products p ON p.id = ol.product_id
+    WHERE ol.order_id = ${orderId}
+    ORDER BY ol.created_at ASC
+  `;
+
+  return { ...order, line_count: lines.length, lines: lines as OrderLineRow[] };
+}
